@@ -18,14 +18,11 @@
 $(function(){
     $('#btn').on('click',() => {
         $.ajax({
-        url: '/form',
-        type: 'get',
+        url: '/forms',
+        type: 'post',
         data: {
             name1: $('#name1').val(),
             name2: $('#name2').val(),
-        },
-        beforeSend:()=>{
-            alert(1);
         },
         success:(data) => {
             console.log(data)
