@@ -1,12 +1,4 @@
-const mysql = require('mysql');
-
-const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root@localhost',
-    password: '',
-    port: '8080',
-    database: 'test',
-})
+const connection = require('./connection')
 
 connection.connect();
 
