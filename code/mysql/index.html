@@ -16,10 +16,23 @@
 </body>
 <script>
     $(function(){
-        $btn.on('click',() =>{
+        $('#btn').on('click',() =>{
             const val1 = $('#name1').val();
             const val2 = $('#name2').val();
             console.log(val1,val2)
+            $.ajax({
+                url:'/form',
+                data:{
+                    a:val1,
+                    b:val2
+                },
+                success:(r)=>{
+                    console.log(r)
+                },
+                error:(err)=>{
+                    console.log('err',err)
+                }
+            })
         })
     })
 </script>
