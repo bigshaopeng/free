@@ -7,4 +7,6 @@ exports.start = function(){
     app.listen(8888);
 }
 
-require('../route/index')()
+require('../route/index')();
+require('../api/post')();
+require('../api/get')();
