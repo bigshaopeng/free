@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+    <title>page</title>
+</head>
+<body>
+    <div>
+    <p>我是退出页</p>
+    用户名：<input type="text" id="username">
+    <br/>
+    密码：<input type="text" id="password">
+    <br/>
+    <button id="quit">退出</button>
+    <br/>
+    <button id="delall">注销所有用户</button>
+    <br/>
+    <button id="del">注销用户</button>
+    <br/>
+    <button id="getinfo">获取个人信息</button>
+    <div id="userinner"></div>
+    <a href="/">首页</a>
+    </div>
+</body>
+<script>
+    $(function(){
+        $("#getinfo").on('click',() =>{
+            $.ajax({
+                type:'get',
+                url:'/get_userinfo',
+                data:{
+                    username:$('#username').val()
+                },
+                success:(r)=>{
+                    const data = JSON.parse(r);
+                    if(data.status === 'ok'){
+                        const str = `id:${data['data']['id']}->username:${data['data']['username']}->password:${data['data']['password']}`;
+                        $('#userinner').html(str)
+                    }else{
+                        $('#userinner').html(data.error)
+                    }
+                }
+            })
+        });
+        $("#del").on("click",() =>{
+            $.ajax({
+                type:'post',
+                url:'/post_del',
+                data:{
+                    username:$('#username').val(),
+                    password:$('#password').val(),
+                    is_all: false,
+                },
+                success:(r) =>{
+                    const data = JSON.parse(r)
+                    if(data['status'] === 'ok'){
+                        $('#userinner').html('success')
+                    }else{
+                        $('#userinner').html(data.error)
+                    }
+                }
+            })
+        })
+        $("#delall").on("click",() =>{
+            $.ajax({
+                type:'post',
+                url:'/post_del',
+                data:{
+                    username:$('#username').val(),
+                    password:$('#password').val(),
+                    is_all: true,
+                },
+                success:(r) =>{
+                    const data = JSON.parse(r)
+                    if(data['status'] === 'ok'){
+                        $('#userinner').html('success')
+                    }else{
+                        $('#userinner').html(data.error)
+                    }
+                }
+            })
+        })
+    })
+</script>
+</html>

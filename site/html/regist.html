@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+    <title>page</title>
+</head>
+<body>
+    <div>
+    <p>我是注册页</p>
+    用户名：<input type="text" id="username">
+    <br/>
+    密码：<input type="text" id="password">
+    <br/>
+    <button id="btn">注册</button>
+    </div>
+</body>
+<script>
+    $(function(){
+        $("#btn").on('click',() =>{
+            // location.href = '/login';
+            $.ajax({
+                url: '/post_regist',
+                type:'post',
+                data:{
+                    username:$("#username").val(),
+                    password:$("#password").val(),
+                },
+                success: (r) => {
+                    const data = JSON.parse(r);
+                    if(data.status === 'ok'){
+                        location.href = '/login'
+                    }
+                },
+                error:(err) =>{
+                    console.log('err',err)
+                }
+            })
+        })
+    })
+</script>
+</html>

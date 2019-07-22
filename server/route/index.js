@@ -2,17 +2,20 @@ const app = require('../express/express').app;
 const path = require('path');
 
 module.exports = function(){
-    app.get('/a',(req,res) => {
-        res.send('aaaa')
-    })
-    app.get('/b',(req,res) => {
+    app.get('/',(req,res) => {
         res.sendFile(path.join(__dirname,'../../site/html/index.html'))
+        // res.send('aaaa')
     })
-    app.get('/c',(req,res) => {
-        res.end('cccc')
+    app.get('/regist',(req,res) => {
+        res.sendFile(path.join(__dirname,'../../site/html/regist.html'))
     })
-    app.get('/d',(req,res) => {
-        res.write('dddd')
-        res.end('()end')
+    app.get('/login',(req,res) => {
+        res.sendFile(path.join(__dirname,'../../site/html/login.html'))
+        // res.end('cccc')
+    })
+    app.get('/logout',(req,res) => {
+        res.sendFile(path.join(__dirname,'../../site/html/logout.html'))
+        // res.write('dddd')
+        // res.end('()end')
     })
 }
