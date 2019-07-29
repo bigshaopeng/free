@@ -1,6 +1,7 @@
 import React from 'react';
 import { style } from 'typestyle';
 import { Link } from 'react-router-dom';
+import $ from 'jquery';
 
 const sty = {
     app: style({
@@ -21,17 +22,39 @@ const sty = {
         textAlign: 'center',
     }),
 }
+
+
 // consumer: 'rgb(255, 191, 0)',
 //     supplier: 'rgb(135, 208, 104)',
 //     manufacturer: '#ff7067',
 //     dealer: '#1890ff',
 export class Home extends React.Component {
+
+    toGetinfo = () => {
+        $.ajax({
+            type: 'get',
+            url: `http://localhost:8888/get_userinfo`,
+            data: {
+                username: 'zsp1',
+                password: '111',
+            },
+            success: (data) => {
+                // this.props.
+                console.log(data)
+            },
+            error: (err) => {
+                console.log(err)
+            }
+        })
+    }
     render() {
         return <div className={sty.app}>
             <div className={sty.body}>
                 <div>首页</div>
                 <Link to='/login'>登录</Link>
                 <Link to='/logout'>退出</Link>
+                <div onClick={this.toGetinfo}>获取info</div>
+
             </div>
         </div>
     }

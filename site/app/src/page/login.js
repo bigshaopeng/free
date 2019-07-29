@@ -28,10 +28,14 @@ const sty = {
 //     manufacturer: '#ff7067',
 //     dealer: '#1890ff',
 export class Login extends React.Component {
-    tologout = () => {
+    toLogin = () => {
         $.ajax({
             type: 'post',
             url: `http://localhost:8888/post_login`,
+            data: {
+                username: 'zsp1',
+                password: '111',
+            },
             success: (data) => {
                 // this.props.
                 console.log(data)
@@ -41,7 +45,22 @@ export class Login extends React.Component {
             }
         })
     }
-    componentDidMount() {
+    toRegist = () => {
+        $.ajax({
+            type: 'post',
+            url: `http://localhost:8888/post_regist`,
+            data: {
+                username: 'zsp1',
+                password: '111',
+            },
+            success: (data) => {
+                // this.props.
+                console.log(data)
+            },
+            error: (err) => {
+                console.log(err)
+            }
+        })
     }
     render() {
         return <div className={sty.app}>
@@ -56,7 +75,10 @@ export class Login extends React.Component {
                     placeholder='请输入密码'
                 />
                 <br />
-                <Button type='primary' onClick={this.tologin}>登录</Button>
+                <Button type='primary' onClick={this.toRegist}>注册</Button>
+                <br />
+                <Button type='primary' onClick={this.toLogin}>登录</Button>
+                <br />
                 <Link to='/home'>首页</Link>
             </div>
         </div>
