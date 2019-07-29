@@ -3,23 +3,21 @@ const success = require('../common/public').success;
 const error = require('../common/public').error;
 const connection = require('../mysql/connection')
 const BP = require('body-parser');
-const UBP = BP.urlencoded({extended:false});
+const UBP = BP.urlencoded({ extended: false });
+const fs = require('fs');
 
-module.exports = function(){
-    app.get('/get_userinfo',UBP, (req,res) =>{
+module.exports = function () {
+    app.get('/get_userinfo', UBP, (req, res) => {
         const body = req.query;
-        if(!body.username){
+        if (!body.username) {
             res.end(error('username'));
         }
-        const sql = 'SELECT * FROM user where username=?';
-        connection.query(sql,[body.username],(err,result,fileds) => {
-            if(err) throw err;
-            if(result.length > 0){
-                res.end(success(result[0]));
-            }else{
-                res.end(error('no user'));
-            }
-        })
-
+        const data = fs.readFileSync('./mysql/table/user_center.json');
+        const msg = JSON.parse(data);
+        if (!!msg[body.username]) {
+            res.end(success(msg[body.username]))
+        } else {
+            res.end(error('no user'))
+        }
     })
 }
