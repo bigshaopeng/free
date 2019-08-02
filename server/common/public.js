@@ -10,7 +10,7 @@ exports.error = function (info) {
     const obj = {
         status: 'err',
         data: null,
-        error: JSON.stringify(info),
+        error: info,
     }
     return JSON.stringify(obj)
 }
