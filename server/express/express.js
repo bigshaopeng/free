@@ -1,7 +1,9 @@
 const express = require('express');
 const multer = require('multer');
+const path = require('path');
 
 const app = express();
+// app.use('/server', express.static('./'))
 app.use('/file', express.static('../site/html'))
 app.use('/main', express.static('../static/img'))
 app.use('/img', express.static('../upload'))
@@ -32,7 +34,9 @@ const template = `<!doctype html>
   <div id="root">express</div>
 </body>
 </html>`;
-
+app.get('/index.html', (req, res) => {
+  res.sendfile(path.join(__dirname + '/../index.html'))
+})
 // app.get("*", (req, res) => {
 //   res.send(template)
 // })
