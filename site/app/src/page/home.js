@@ -29,7 +29,14 @@ const sty = {
 //     manufacturer: '#ff7067',
 //     dealer: '#1890ff',
 export class Home extends React.Component {
-
+    ajaxToGetInfo = () => {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open('get', 'http://localhost:8888/get_userinfo?username=zsp1&password=111', false);
+        xmlhttp.send();
+        var data = xmlhttp.responseText;
+        // xmlhttp.responseXML();
+        console.log(data)
+    }
     toGetinfo = () => {
         $.ajax({
             type: 'get',
@@ -53,7 +60,7 @@ export class Home extends React.Component {
                 <div>首页</div>
                 <Link to='/login'>登录</Link>
                 <Link to='/logout'>退出</Link>
-                <div onClick={this.toGetinfo}>获取info</div>
+                <div onClick={this.ajaxToGetInfo}>获取info</div>
 
             </div>
         </div>

@@ -1,12 +1,12 @@
 const util = require('util');
 
-function Base(){
-    this.name = 'Base';
-    this.base = 1991;
-    this.sayHello = function(){
-        console.log('hello'+this.name)
-    }
-}
+// function Base(){
+//     this.name = 'Base';
+//     this.base = 1991;
+//     this.sayHello = function(){
+//         console.log('hello'+this.name)
+//     }
+// }
 // ------------util.inherits
 
 // Base.prototype.showName = function(){

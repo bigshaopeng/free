@@ -28,6 +28,17 @@ const sty = {
 //     manufacturer: '#ff7067',
 //     dealer: '#1890ff',
 export class Login extends React.Component {
+    ajaxTologin = () => {
+        const xmlhttp = new XMLHttpRequest();
+        xmlhttp.open('post', 'http://localhost:8888/post_login', true);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.send('fname=Henry&lname=Ford')
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                document.getElementById('express').innerHTML = xmlhttp.responseText;
+            }
+        }
+    }
     toLogin = () => {
         $.ajax({
             type: 'post',
@@ -64,6 +75,7 @@ export class Login extends React.Component {
     }
     render() {
         return <div className={sty.app}>
+            <div id='express'></div>
             <div className={sty.body}>
                 <div>登录</div>
 
@@ -77,7 +89,7 @@ export class Login extends React.Component {
                 <br />
                 <Button type='primary' onClick={this.toRegist}>注册</Button>
                 <br />
-                <Button type='primary' onClick={this.toLogin}>登录</Button>
+                <Button type='primary' onClick={this.ajaxTologin}>登录</Button>
                 <br />
                 <Link to='/home'>首页</Link>
             </div>

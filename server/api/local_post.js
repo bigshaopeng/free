@@ -19,7 +19,7 @@ const regist = (req, res) => {
     fs.readFile('./mysql/table/user_center.json', (err, data) => {
         if (err) { console.log(err); return null };
         let msg = JSON.parse(data);
-        if (!msg[body.username]) {
+        if (!!msg[body.username]) {
             msg[body.username] = {
                 username: body.username,
                 password: body.password,
@@ -30,26 +30,32 @@ const regist = (req, res) => {
             res.end(error('error regist'));
         }
     })
-    res.end(success());
+    // res.end(success());
 }
 
+const htmltel = (req, res) => {
+    res.send(`<div style="color:red">express</div>`);
+}
 const login = (req, res) => {
     const body = req.body;
-    if (!body.username) {
-        res.end(error('username'));
-        return
-    }
-    if (!body.password) {
-        res.end(error('password'));
-        return
-    }
-    const data = fs.readFileSync('./mysql/table/user_center.json');
-    const msg = JSON.parse(data);
-    if (!!msg[body.username]) {
-        res.end(success())
-    } else {
-        res.end(error('no user'))
-    }
+    console.log(req, body)
+    res.end(success(body))
+    // if (!body.username) {
+    //     res.end(error('username'));
+    //     return
+    // }
+    // if (!body.password) {
+    //     res.end(error('password'));
+    //     return
+    // }
+    // const data = fs.readFileSync('./mysql/table/user_center.json');
+    // const msg = JSON.parse(data);
+
+    // if (!!msg[body.username]) {
+    //     res.end(success())
+    // } else {
+    //     res.end(error('no user'))
+    // }
 }
 
 const modify = (req, res) => {
@@ -125,7 +131,7 @@ const upload = (req, res) => {
 }
 module.exports = function () {
     app.post('/post_regist', UBP, regist);
-    app.post('/post_login', UBP, login);
+    app.post('/post_login', UBP, htmltel);
     app.post('/post_del', UBP, del);
     app.post('/post_modify', UBP, modify);
     // app.post('/post_upload', UBP, upload);
