@@ -1,15 +1,15 @@
-// require('./express/express').start()
+require('./express/express').start()
 
-const pg = require('pg')
-const express = require('express');
-const BP = require('body-parser');
-const UBP = BP.urlencoded({ extended: false });
-const path = require('path');
-const app = express();
-app.use('/data', express.static('./'))
+// const pg = require('pg')
+// const express = require('express');
+// const BP = require('body-parser');
+// const UBP = BP.urlencoded({ extended: false });
+// const path = require('path');
+// const app = express();
+// app.use('/data', express.static('./'))
 
-app.get('/i.html', (req, res) => res.sendFile(__dirname + '/index.html'))
-app.listen(8989)
+// app.get('/i.html', (req, res) => res.sendFile(__dirname + '/index.html'))
+// app.listen(8989)
 
 // var configs = `tcp://postgres:psqls@localhost:8081/Tables`
 // var clientPost = {

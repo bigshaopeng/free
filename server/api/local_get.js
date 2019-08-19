@@ -20,4 +20,9 @@ module.exports = function () {
             res.end(error('no user'))
         }
     })
+    app.get('/get_info', UBP, (req, res) => {
+        const body = req.query;
+        const data = fs.readFileSync('./mysql/table/user_center.json');
+        res.end(`${body['jsoncallback']}(${data})`)
+    })
 }

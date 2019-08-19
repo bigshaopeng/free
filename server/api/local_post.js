@@ -19,7 +19,7 @@ const regist = (req, res) => {
     fs.readFile('./mysql/table/user_center.json', (err, data) => {
         if (err) { console.log(err); return null };
         let msg = JSON.parse(data);
-        if (!!msg[body.username]) {
+        if (!msg[body.username]) {
             msg[body.username] = {
                 username: body.username,
                 password: body.password,
@@ -37,9 +37,16 @@ const htmltel = (req, res) => {
     res.send(`<div style="color:red">express</div>`);
 }
 const login = (req, res) => {
-    const body = req.body;
-    console.log(req, body)
-    res.end(success(body))
+
+
+
+
+
+
+    // const body = req.body;
+    // console.log(req, body)
+    // res.end(success(body))
+
     // if (!body.username) {
     //     res.end(error('username'));
     //     return
@@ -85,6 +92,11 @@ const del = (req, res) => {
 
 const upload = (req, res) => {
     const url = path.join(__dirname, '../../upload/head');
+    const body = req.body;
+    console.log(req.files, body)
+    console.log('-----------')
+    console.log(req)
+    // res.end(success(body))
     const des_file = url + "/" + req.files[0].originalname;
     fs.readFile(req.files[0].path, function (err, data) {
         fs.writeFile(des_file, data, function (err) {
@@ -127,13 +139,13 @@ const upload = (req, res) => {
     //         }
     //     })
     // })
-    res.send(success())
+    // res.send(success())
 }
 module.exports = function () {
     app.post('/post_regist', UBP, regist);
-    app.post('/post_login', UBP, htmltel);
+    app.post('/post_login', UBP, login);
     app.post('/post_del', UBP, del);
     app.post('/post_modify', UBP, modify);
     // app.post('/post_upload', UBP, upload);
-    app.post('/post_upload', upload)
+    app.post('/post_upload', UBP, upload)
 }
