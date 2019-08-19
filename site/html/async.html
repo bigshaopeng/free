@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    // get
+    // var xmlhttp = new XMLHttpRequest();
+    // xmlhttp.open('GET', '/get_userinfo?username=zsp1', false);
+    // xmlhttp.send();
+    // console.log(xmlhttp.responseText)
+
+    // posts
+    var xml = new ActiveXObject('Microsoft.XMLHTTP');
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = () => {
+        console.log(xmlhttp.readyState)
+        console.log(xmlhttp.status)
+        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+            console.log(xmlhttp.responseText)
+        }
+    }
+    xmlhttp.open('POST', '/post_regist', true);
+    xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+    xmlhttp.send('username=zsp4&password=123')
+</script>
+
+</html>

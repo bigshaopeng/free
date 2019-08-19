@@ -56,6 +56,10 @@ export class Home extends React.Component {
     }
     render() {
         return <div className={sty.app}>
+
+            <div id="divCustomers"></div>
+
+
             <div className={sty.body}>
                 <div>首页</div>
                 <Link to='/login'>登录</Link>

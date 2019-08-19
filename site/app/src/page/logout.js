@@ -34,6 +34,10 @@ export class Logout extends React.Component {
         $.ajax({
             type: 'post',
             url: `http://localhost:8888/post_login`,
+            data: {
+                zsp: 'ds',
+                pwd: 'aaa'
+            },
             success: (data) => {
                 // this.props.
                 console.log(data)
@@ -44,17 +48,16 @@ export class Logout extends React.Component {
         })
     }
     toUpload = () => {
-        console.log(fileName, file)
-
+        console.log(fileName, file, $('#upload').val())
         $.ajax({
             type: 'post',
             url: `http://localhost:8888/post_upload`,
             data: {
-                file,
-                fileName,
+                file: $('#upload').val()
             },
             contentType: false,
             processData: false,
+            dataType: 'json',
             success: (data) => {
                 // this.props.
                 console.log(data)
@@ -63,15 +66,38 @@ export class Logout extends React.Component {
                 console.log(err)
             }
         })
+        // $.ajax({
+        //     type: 'POST',
+        //     url: `http://localhost:8888/post_upload`,
+        //     // beforeSend: (xhr) => {
+        //     //     // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        //     // },
+        //     data: {
+        //         zsp: 'ds',
+        //         pwd: 'aaa'
+        //         // fileName: JSON.stringify(fileName),
+
+        //     },
+        //     // contentType: false,
+        //     // processData: false,
+        //     // dataType: 'json',
+        //     success: (data) => {
+        //         // this.props.
+        //         console.log(data)
+        //     },
+        //     error: (err) => {
+        //         console.log(err)
+        //     }
+        // })
     }
     componentDidMount() {
     }
     render() {
         return <div className={sty.app}>
             <div className={sty.body}>
-                <div>退出</div>
+                <div onClick={this.toLogout}>退出</div>
                 <Link to='/home'>首页</Link>
-                <form action="http://localhost:8888/post_upload" method="post" enctype="multipart/form-data">
+                <form action="http://192.168.11.55:8888/post_upload" method="post" enctype="multipart/form-data">
                     <input type="file" name="image" size="50" />
                     <br />
                     <input type="submit" value="上传文件" />
