@@ -12,7 +12,10 @@
     "pg": "^7.12.0"
   },
   "devDependencies": {
-    "create-react-app": "^3.0.1"
+    "create-react-app": "^3.0.1",
+    "lodash": "^4.17.15",
+    "webpack": "^4.39.2",
+    "webpack-cli": "^3.3.7"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
