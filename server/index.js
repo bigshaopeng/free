@@ -7,6 +7,7 @@ const UBP = BP.urlencoded({ extended: false });
 const path = require('path');
 const app = express();
 app.use('/data', express.static('./'))
+app.use('/html', express.static('../site/html'))
 
 // app.get('/i.html', (req, res) => res.sendFile(__dirname + '/index.html'))
 // app.listen(8989)
@@ -20,8 +21,19 @@ const pool = new Pool({
     sslmode: 'disable'
 })
 
-pool.query('select * from account_account', (err, ress) => {
-    console.log(err, ress.rows);
-    // res.send({ "info_name": ress.rows });
-    pool.end()
+app.get('/p_add', UBP, (req, res) => {
+    console.log(req.body)
+    pool.query(`insert into aa (r_id,r_name,r_slug) values ($1,$2,$3)`, [3, 'slug3', 'name3'], (err, ress) => {
+        // pool.end();
+        console.log('ok')
+        res.end(JSON.stringify({ data: 'ok' }));
+    })
+    // pool.query(`select * from aa`, (err, ress) => {
+    //     // pool.end();
+    //     console.log('ok')
+    //     console.log(ress)
+    //     res.end('ok');
+    // })
 })
+
+app.listen(8888);
