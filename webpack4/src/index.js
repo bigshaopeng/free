@@ -8,5 +8,3 @@ function init() {
 
 let element = init();
 document.body.appendChild(element)
-
-    (function () { console.log(111) })()

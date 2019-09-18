@@ -8,11 +8,6 @@
     "build": "webpack",
     "start": "webpack-dev-server --open"
   },
-  "keywords": [
-    "a",
-    "d",
-    "c"
-  ],
   "author": "zsp",
   "license": "ISC",
   "dependencies": {
