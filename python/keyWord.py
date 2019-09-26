@@ -1,10 +1,10 @@
 #!/usr/bin/python
 import keyword
+print(keyword.kwlist)
 
 # 多行写法
 # import sys; x = 'runoob'; sys.stdout.write(x + '\n')
 
-# print(keyword.kwlist)
 
 # total = ['item_one', 'item_two', 'item_three',
 # 'item_four', 'item_five']
