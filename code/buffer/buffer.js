@@ -1,0 +1,6 @@
+// buf = Buffer.alloc(1024).write('zsp')
+buf = Buffer.from('zsp')
+// bufs = Buffer.from('123')
+// buf.copy(bufs, 1)
+// console.log(buf)
+console.log(buf.toString())
