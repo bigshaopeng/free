@@ -28,44 +28,46 @@ app.get('/', function (req, res) {
     </html>`);
 })
 
-app.post('/file_upload', (req, res) => {
-    const sheet = xlsx.parse(req.files[0].path);
-    let cn = '';
-    let en = '';
-    let obj = {};
-    let rows = [];
-    let cols = [
-        { caption: '姓名', type: 'string', width: 30 },
-        { caption: 'ID', type: 'string', width: 30 },
-    ]
-    // sheet.forEach(item => {
-    //     if (item.data.length > 0) {
-    //         item.data.forEach((list, index) => {
-    //             rows[index] = [
+// app.post('/file_upload', (req, res) => {
+//     const sheet = xlsx.parse(req.files[0].path);
+//     let cn = '';
+//     let en = '';
+let obj = {};
+let rows = [];
+let cols = [
+    { caption: '姓名', type: 'string', width: 30 },
+    { caption: 'ID', type: 'string', width: 30 },
+    { caption: 'id', type: 'string', width: 30 },
+]
+// sheet.forEach(item => {
+//     if (item.data.length > 0) {
+//         item.data.forEach((list, index) => {
+//             rows[index] = [
 
-    //             ]
-    //         })
-    //     }
-    // })
-    for (var i = 0; i < data.length; i++) {
-        console.log(i, data[i])
-        //依次写入
-        rows[i] = [
-            data[i]['user']['data']['name'],
-            data[i]['user_id'],
-        ];
-    }
-    obj.name = "mysheet";
-    obj.rows = rows;
-    obj.cols = cols;
-    let result = excel.execute([obj, obj, obj]);
-    fs.writeFileSync('./user.xlsx', result, 'binary')
-    res.end();
-    // fs.writeFileSync('./file/cn.json', `{${cn}\r}`)
-    // fs.writeFileSync('./file/en.json', `{${en}\r}`)
-    // res.write(`<a href="en.json" download="en">en.json</a><br/>
-    // <a href="cn.json" download="cn">cn.json</a>`)
-    // res.end();
-})
-app.listen(8888);
-open.exec('open http://localhost:8888');
+//             ]
+//         })
+//     }
+// })
+for (var i = 0; i < data.length; i++) {
+    console.log(i, data[i])
+    //依次写入
+    rows[i] = [
+        data[i]['user']['data']['name'],
+        data[i]['user_id'],
+        data[i]['user_id'],
+    ];
+}
+obj.name = "mysheet";
+obj.rows = rows;
+obj.cols = cols;
+let result = excel.execute([obj, obj, obj]);
+fs.writeFileSync('./users.xlsx', result, 'binary')
+// res.end();
+// fs.writeFileSync('./file/cn.json', `{${cn}\r}`)
+// fs.writeFileSync('./file/en.json', `{${en}\r}`)
+// res.write(`<a href="en.json" download="en">en.json</a><br/>
+// <a href="cn.json" download="cn">cn.json</a>`)
+// res.end();
+// })
+// app.listen(8888);
+// open.exec('open http://localhost:8888');
