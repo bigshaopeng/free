@@ -7,6 +7,11 @@ const UBP = BP.urlencoded({ extended: false });
 const fs = require('fs');
 
 module.exports = function () {
+    app.get('/get_userinfo_ws', UBP, (req, res) => {
+        const data = fs.readFileSync('./mysql/table/user_center.json');
+        const msg = JSON.parse(data);
+        res.end(success(msg))
+    })
     app.get('/get_userinfo', UBP, (req, res) => {
         const body = req.query;
         if (!body.username) {
