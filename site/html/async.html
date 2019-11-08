@@ -14,6 +14,8 @@
 <script>
     // get
     var xmlhttp = new XMLHttpRequest();
+    // readyState 0初始化请求 1建立请求 2接收请求 3处理请求 4完成请求
+    // status 200 404
     xmlhttp.onreadystatechange = () => {
         console.log(xmlhttp.readyState)
         console.log(xmlhttp.status)
