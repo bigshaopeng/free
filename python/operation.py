@@ -4,7 +4,7 @@
 
 '''
 
-# 逻辑运算符 and or not
+# 逻辑运算符 and | or | not (js的 与&& 或|| 非!)
 a=10
 b=20
 if a and b:

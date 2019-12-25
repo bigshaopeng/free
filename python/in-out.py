@@ -13,3 +13,5 @@ print '22'.rjust(5)
 
 print "22".zfill(5)
 print "22.9".zfill(5)
+
+print '112'.center(5)
