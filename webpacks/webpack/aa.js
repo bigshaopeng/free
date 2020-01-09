@@ -1,5 +1,5 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin'); // 通过 npm 安装
-const webpack = require('webpack');
+const HtmlWebpackPlugin = require('./html-webpack-plugin'); // 通过 npm 安装
+const webpack = require('./webpack');
 const path = require('path');
 
 module.exports = {
