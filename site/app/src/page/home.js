@@ -61,7 +61,8 @@ export class Home extends React.Component {
 
 
             <div className={sty.body}>
-                <div>首页</div>
+
+                <div dangerouslySetInnerHTML={{ __html: `dangerouslySetInnerHTML` }}>首页</div>
                 <Link to='/login'>登录</Link>
                 <Link to='/logout'>退出</Link>
                 <div onClick={this.ajaxToGetInfo}>获取info</div>
