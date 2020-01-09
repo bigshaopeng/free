@@ -9,13 +9,13 @@
 </head>
 
 <body>
-
+    <div id="input">input</div>
+    <input id="text" type="text">
 </body>
 <script>
     if ("WebSocket" in window) {
         console.log('success websocket');
         const ws = new WebSocket('ws://localhost:8181');
-
         ws.onopen = () => {
             console.log('open')
         }
@@ -28,6 +28,10 @@
         }
         ws.onclose = () => {
             console.log('close')
+        }
+        document.getElementById("input").onclick = function (e) {
+            var time = new Date();
+            ws.send(`inner-html--${document.getElementById("text").value}`);
         }
     } else {
         console.log('error websocket');

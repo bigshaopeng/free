@@ -4,4 +4,4 @@ const app = express();
 
 app.use('/', express.static('./'))
 app.listen(3000);
-open.exec('open http://localhost:3000/for-in.html')
+open.exec('open http://localhost:3000/webSocket.html')

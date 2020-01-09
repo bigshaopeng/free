@@ -12,8 +12,8 @@ wss.on('connection', (ws) => {
         sendStockUpdates(ws);
     }, 10000);
     ws.on("message", (message) => {
-        var stockRequest = JSON.parse(message);//根据请求过来的数据来更新。
-        console.log("收到消息", stockRequest);
+        // var stockRequest = JSON.parse(message);//根据请求过来的数据来更新。
+        console.log("收到消息", message);
         sendStockUpdates(ws);
     })
 })
