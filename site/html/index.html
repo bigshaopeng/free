@@ -1,13 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
     <title>首页</title>
+    <style>
+        a:after {
+            content: attr(data-href);
+        }
+
+        .ds {
+            width: 100px;
+            height: 100px;
+            /* background: -webkit-linear-gradient(left, red, blue); */
+            /* Safari 5.1 - 6.0 */
+            /* background: -o-linear-gradient(right, red, blue); */
+            /* Opera 11.1 - 12.0 */
+            /* background: -moz-linear-gradient(right, red, blue); */
+            /* Firefox 3.6 - 15 */
+            background: linear-gradient(to right, red, blue);
+            /* 标准的语法（必须放在最后） */
+        }
+
+        .inputs:disabled {
+            background: pink;
+        }
+
+        .inputs:enabled {
+            background: red;
+        }
+    </style>
 </head>
+
 <body>
+    <input type="text" class="inputs" onfocus="this.setAttribute('disabled',true)">
+    <p><a href="http://www.php.cn" data-href="dsa">PHP中文网</a></p>
+    <p><a href="#">HTML中文网</a></p>
     <a href="/regist">首页</a>
+    <div id='domID'>
+        sss
+        <div id='idChild' class="aa" onclick={con()}>ff</div>
+    </div>
+    <div class="ds">
+        ds
+    </div>
 </body>
+
+<script>
+
+    const aa = async function () {
+        var bb = await setTimeout(() => { return console.log(22) }, 4000);
+        // (function () {
+        //     bb = setTimeout(() => 2, 5000)
+        //     console.log(22, bb)
+        // })()
+        console.log(11, bb)
+    }
+    aa()
+
+    // //做饭
+    // function cook() {
+    //     console.log('开始做饭。');
+    //     var p = new Promise(function (resolve, reject) {        //做一些异步操作
+    //         setTimeout(function () {
+    //             console.log('做饭完毕！');
+    //             resolve('鸡蛋炒饭');
+    //         }, 1000);
+    //     });
+    //     return p;
+    // }
+
+    // //吃饭
+    // function eat(data) {
+    //     console.log('开始吃饭：' + data);
+    //     var p = new Promise(function (resolve, reject) {        //做一些异步操作
+    //         setTimeout(function () {
+    //             console.log('吃饭完毕!');
+    //             resolve('一块碗和一双筷子');
+    //         }, 2000);
+    //     });
+    //     return p;
+    // }
+
+    // function wash(data) {
+    //     console.log('开始洗碗：' + data);
+    //     var p = new Promise(function (resolve, reject) {        //做一些异步操作
+    //         setTimeout(function () {
+    //             console.log('洗碗完毕!');
+    //             resolve('干净的碗筷');
+    //         }, 2000);
+    //     });
+    //     return p;
+    // }
+    // cook()
+    //     .then(function (data) {
+    //         return eat(data);
+    //     })
+    //     .then(function (data) {
+    //         return wash(data);
+    //     })
+    //     .then(function (data) {
+    //         console.log(data);
+    //     });
+    // const promise = new Promise((resolve, reject) => {
+    //     resolve('ss')
+    // })
+    // promise.then(
+    //     (r) => {
+    //         console.log(r)
+
+    //     },
+    //     (resolve) => {
+    //         resolve('bb')
+    //     }
+    // ).then(r => {
+    //     console.log(r)
+    // })
+    // console.log(promise)
+    // var n = { a: 1, b: 2, c: 3 }
+    // var m = objToStrMap(n)
+    // console.log(m)
+    // var xmlhttp = new XMLHttpRequest();
+    // console.log(xmlhttp)
+    // function con() {
+    //     console.log(1)
+    // }
+    // document.onkeydown = function (event) {
+    //     var ev = event || window.event;
+    //     console.log(ev)
+    // }
+    // // DOM 节点 parent child sibling 
+    var ele_id = document.getElementById('domID');
+    // ele_id.setAttribute
+    // var child = document.getElementById('idChild');
+    // var ele_tag = document.getElementsByTagName('div');
+    // var text = document.createTextNode('123');
+    // var pp = document.createElement('a');
+    // pp.innerHTML = '11';
+    // ele_id.onmousedown = function () {
+    //     console.log('doen')
+    // }
+    // ele_id.style.color = 'red'
+    // document.getElementById('domID').getElementsByTagName('div')[0].innerHTML = '11'
+    // console.log(ele_id.el.nodeValue)
+    // console.log(ele_id.innerHTML)
+    // pp.setAttribute('href', 'www.baidu.com')
+    // ele_id.appendChild(pp)
+    // ele_id.insertBefore(text, child)
+    // ele_id.appendChild(text)
+    // ele_id.replaceChild(text, child);
+    // ele_tag[0].innerHTML = 'hhh'
+    // ele_id.setAttribute('hh', 'hh')
+    // console.log(ele_id.getAttribute('hh'))
+    // child.parentNode.removeChild(ele_id.childNodes[1]);
+    // child.innerHTML = 'ss'
+    // ele_id.childNodes
+</script>
+
 </html>

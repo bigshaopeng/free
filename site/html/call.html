@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    var name = 'a', age = 1;
+    var obj_a = {
+        name: 'aa',
+        age: this.age,
+        say: function () {
+            console.log(this.name + '------' + this.age)
+        },
+        sing: function (val1, val2) {
+            console.log(this.name + this.age + '------' + val1 + '======' + val2)
+        }
+    }
+    var obj_b = {
+        name: 'bb',
+        age: 2
+    }
+    // obj_a.say.call(obj_b)
+    // obj_a.say.apply(obj_b)
+    // obj_a.say.bind(obj_b)()
+    // obj_a.say()
+
+    obj_a.sing.call(obj_b, '1', '2')
+    obj_a.sing.apply(obj_b, ['val1', 'val2'])
+    obj_a.sing.bind(obj_b, 'bind1', 'bind2')()
+    obj_a.sing.bind(obj_b, ['bind1', 'bind2'])()
+
+    // bb2------1======2
+    // call.html:23 bb2------val1======val2
+    // call.html:23 bb2------bind1======bind2
+    // call.html:23 bb2------bind1,bind2======undefined
+</script>
+
+</html>

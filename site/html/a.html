@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        div {
+            height: 500px;
+        }
+
+        #aa {
+            background: #333
+        }
+
+        #bb {
+            background: #ccc
+        }
+
+        #cc {
+            background: pink
+        }
+
+        #dd {
+            background: orange
+        }
+    </style>
+</head>
+
+<body>
+    <div id="cc" data-title='title'>
+        <a href="#aa">cc go aa</a>
+    </div>
+    <div id="dd">
+        <a href="#bb">dd go bb</a>
+    </div>
+    <div id="bb">
+        <a href="#cc">bb go cc</a>
+    </div>
+    <div id="aa">
+        <a href="#dd">aa go dd</a>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>WebSocket</title>
+</head>
+
+<body>
+    <div id="input">input</div>
+    <input id="text" type="text">
+</body>
+<script>
+    if ("WebSocket" in window) {
+        console.log('success websocket');
+        const ws = new WebSocket('ws://localhost:8181');
+        ws.onopen = () => {
+            console.log('open')
+        }
+        ws.onmessage = (r) => {
+            console.log('message')
+            console.log(r.data)
+        }
+        ws.onerror = () => {
+            console.log('error')
+        }
+        ws.onclose = () => {
+            console.log('close')
+        }
+        document.getElementById("input").onclick = function (e) {
+            var time = new Date();
+            ws.send(`inner-html--${document.getElementById("text").value}`);
+        }
+    } else {
+        console.log('error websocket');
+    }
+
+</script>
+
+</html>

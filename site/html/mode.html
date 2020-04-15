@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    // 1------------------- 工厂模式
+    function Person(name, age, sex) {
+        this.name = name;
+        this.age = age;
+        this.sex = sex;
+        this.sayName = () => {
+            return this.name;
+        }
+    }
+
+    Person.prototype = {
+        constructor: Person,
+        sayAge: function () {
+            return this.age
+        }
+    }
+    const person = new Person('zsp', 18, '男');
+
+
+    // console.log(person.name)
+    // console.log(person.sayName())
+    // console.log(person.sayAge())
+
+
+    function Car(name, color, age) {
+        this.name = name;
+        this.color = color;
+        this.age = age;
+    }
+    Car.prototype = Person.prototype;
+    Car.prototype.constructor = Car;
+    const car = new Car('宝马', 'blue', 66)
+
+    // console.log(Car.prototype.constructor)
+
+    // 2------------------------单体模式
+    function Name(name) {
+        this.name = name;
+        this.instance = null;
+    }
+    Name.prototype.getName = function () {
+        return this.name
+    }
+    function newName(name) {
+        console.log(this)
+        if (!this.instance) {
+            this.instance = new Name(name);
+        }
+        return this.instance;
+        // return new Name(name)
+    }
+
+    // var aa = newName('aa');
+    // var bb = newName('bb');
+    // console.log(aa.getName())
+    // console.log(bb.getName())
+    // console.log(aa == bb)
+
+
+    // -------代理使用单体模式
+    function CreateDiv(html) {
+        this.html = html;
+        this.init();
+    }
+    CreateDiv.prototype.init = function () {
+        var div = document.createElement('div');
+        div.innerHTML = this.html;
+        document.body.appendChild(div);
+    }
+    var ProxyMode = (function () {
+        // console.log('aa', this)
+        var instances = null;
+        return function (html) {
+            if (!instances) {
+                instances = new CreateDiv(html)
+            }
+            return instances
+        }
+    })()
+    var aa = new ProxyMode('aaa')
+    var bb = new ProxyMode('bbb')
+
+    // 3 ----------------- 模块模式
+
+    var singleMode = (function () {
+        console.log(this)
+        // 创建私有变量
+        var privateNum = 112;
+        // 创建私有函数
+        function privateFunc() {
+            return privateNum
+            // 实现自己的业务逻辑代码
+        }
+        // 返回一个对象包含公有方法和属性
+        return {
+            publicMethod1: privateFunc,
+        };
+    })();
+    console.log(singleMode.publicMethod1())
+    // console.log(window)
+
+
+    // 加强模块模式
+
+    function CustomType() {
+        this.name = "tugenhua";
+    };
+    CustomType.prototype.getName = function () {
+        return this.name;
+    }
+    var application = (function () {
+        // 定义私有
+        var privateA = "aa";
+        // 定义私有函数
+        function A() { };
+
+        // 实例化一个对象后，返回该实例，然后为该实例增加一些公有属性和方法
+        var object = new CustomType();
+
+        // 添加公有属性
+        object.A = "aa";
+        // 添加公有方法
+        object.B = function () {
+            return privateA;
+        }
+        // 返回该对象
+        return object;
+    })();
+    // console.log(application)
+    // console.log(application.getName())
+
+
+
+    // 4 --------------------------代理模式
+
+    var girl = function (name) {
+        this.name = name;
+    }
+    var boy = function (girl) {
+        this.girl = girl;
+        this.send = function (ring) {
+            console.log(this.girl.name + '嫁给了礼物' + ring)
+        }
+    }
+
+    var ProcyObj = function (girl) {
+        this.girl = girl;
+        this.sendGift = function (gift) {
+            (new boy(this.girl)).send(gift)
+        }
+    }
+    var proxy = new ProcyObj(new girl('zsp'))
+    proxy.sendGift('戒指')
+
+
+
+    // 5---------------------------职责链模式
+    // 6 -------------------------- 命令模式 列表->添加——>x循环列表执行
+    // 7 --------------------------- 模版方法模式（抽象父类，具体实现的子类）
+    // 8 -------------------------- 策略模式
+    // 9 ---------------------------发布--订阅模式（又叫 观察者模式）
+
+    var shoeObj = {}; // 定义发布者
+    shoeObj.list = []; // 缓存列表 存放订阅者回调函数
+
+    // 增加订阅者
+    shoeObj.listen = function (fn) {
+        shoeObj.list.push(fn);  // 订阅消息添加到缓存列表
+    }
+
+    // 发布消息
+    shoeObj.trigger = function () {
+        for (var i = 0, fn; fn = this.list[i++];) {
+            fn.apply(this, arguments);
+        }
+    }
+    // 小红订阅如下消息
+    shoeObj.listen(function (color, size) {
+        console.log("颜色是：" + color);
+        console.log("尺码是：" + size);
+    });
+
+    // 小花订阅如下消息
+    // shoeObj.listen(function (color, size) {
+    //     console.log("再次打印颜色是：" + color);
+    //     console.log("再次打印尺码是：" + size);
+    // });
+    // shoeObj.trigger("红色", 40);
+    // shoeObj.trigger("黑色", 42);
+
+
+
+
+    // 10 ---------------- 中介者模式
+</script>
+
+</html>

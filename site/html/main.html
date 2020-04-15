@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MAIN</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    var _b = document.body;
+    var _p = document.createElement('p');
+    var _t = document.createTextNode('zspddd');
+    _p.setAttribute('data-attr', 'attr')
+    _p.innerHTML = '12';
+    _p.style.color = 'red';
+    _b.append(_p)
+    _b.appendChild(_t)
+    _b.insertBefore(_t, _p);
+    // _b.replaceChild(_t, _p)
+    _p.removeAttribute('style')
+    var dataAttr = _p.getAttribute('data-attr')
+    _p.innerText = dataAttr;
+    _p.onclick = function () {
+        alert(dataAttr)
+    }
+    var _attr = document.createAttribute('title');
+    _attr.nodeValue = 'hahha';
+    _b.setAttributeNode(_attr)
+    // _b.removeChild(_p);
+</script>
+
+</html>

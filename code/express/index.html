@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,31 +8,34 @@
     <title>Document</title>
     <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
 </head>
+
 <body>
     <div>
-            <input type="text" id='name1' >
-            <input type="text" id='name2'>
-            <button id="btn">click</button>
+        <input type="text" id='name1'>
+        <input type="text" id='name2'>
+        <button id="btn">click</button>
+
     </div>
 </body>
 <script>
-$(function(){
-    $('#btn').on('click',() => {
-        $.ajax({
-        url: '/forms',
-        type: 'post',
-        data: {
-            name1: $('#name1').val(),
-            name2: $('#name2').val(),
-        },
-        success:(data) => {
-            console.log(data)
-        },
-        error:(err)=>{
-            console.log('err',err)
-        }
+    $(function () {
+        $('#btn').on('click', () => {
+            $.ajax({
+                url: '/forms',
+                type: 'post',
+                data: {
+                    name1: $('#name1').val(),
+                    name2: $('#name2').val(),
+                },
+                success: (data) => {
+                    console.log(data)
+                },
+                error: (err) => {
+                    console.log('err', err)
+                }
+            })
+        })
     })
-    })
-})
 </script>
+
 </html>
