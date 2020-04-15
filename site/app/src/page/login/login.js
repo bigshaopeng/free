@@ -4,7 +4,7 @@ import { style } from "typestyle";
 
 const sty = {
     app: style({
-        background: '#f4f4f4',
+        background: 'orange',
         position: 'fixed',
         left: 0,
         right: 0,
