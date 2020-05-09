@@ -75,21 +75,21 @@ print strs[0], \
 
 
 
-'''
+
 # strs = 'ab%sdefg%d'
 # print strs % ('c',3)
 
-strs = "abc"\
-"def"\
-"gh"
-strs2 = """zsp\
-dsdsds\
-%d
-"""
-print strs
-print strs2 % 3
+# strs = "abc"\
+# "def"\
+# "gh"
+# strs2 = """zsp\
+# dsdsds\
+# %d
+# """
+# print strs
+# print strs2 % 3
 
-'''
+
 
 '''
 print len("das") 
@@ -177,13 +177,14 @@ print tuple([2,4,5]) # 将列表转为元组
 # 创建呢集合使用 {} 或 set(), 创建一个空集合必须使用 set()
 # set() 元素间用空格隔开，不能用逗号隔开
 
-sets = { 'aa', 'bb', 'cc', 'dd', 'ee' }
-insets = set( 'aa' 'bb' 'cc' 'dd' 'ee' )
+# sets = { 'aa', 'bb', 'cc', 'dd', 'ee' }
+# insets = set( 'aa' 'bb' 'cc' 'dd' 'ee' )
 # print insets
 # print sets
 
-set1 = set( 'abcde' )
-set2 = set( 'acdfg' )
+# set1 = set( 'abcde' )
+# set2 = set( 'acdfg' )
+
 '''
 
 print set1 - set2 # 差集 ['b', 'e']
@@ -245,3 +246,8 @@ print 1 in dicts
 print dicts.pop(1)
 print dicts
 '''
+
+# js 数组 [] 还是 [] 代表 python list 列表
+# js 数组 [] 改成 () 代表 python tuple 元组
+# js 数组 [] 改成 {} 代表 python set 集合
+# js Object python dictionary 字典
