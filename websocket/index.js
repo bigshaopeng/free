@@ -4,7 +4,7 @@ wss.on('connection', (ws) => {
     console.log('ws');
     var sendStockUpdates = function (ws) {
         if (ws.readyState == 1) {
-            ws.send('false');//需要将对象转成字符串。WebSocket只支持文本和二进制数据
+            ws.send('data');//需要将对象转成字符串。WebSocket只支持文本和二进制数据
             console.log("更新");
         }
     }

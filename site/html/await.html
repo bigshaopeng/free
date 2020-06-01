@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div onclick="javascript:void(document.body.style.background = 'pink');">hhhhh</div>
+</body>
+<script>
+    // 可以返回promise对象
+    function aa(num) {
+        return new Promise(resolve => {
+            setTimeout(() => {
+                resolve(num)
+            }, 2000)
+        })
+    }
+
+    var fun = async (x) => {
+        var p1 = await aa(20)
+        console.log(p1)
+        var p2 = await aa(30)
+        return x + p1 + p2
+    }
+    fun(10).then(v => console.log(v))
+
+    // 效率更好
+    var fun2 = async (x) => {
+        var p1 = aa(20)
+        console.log(p1)
+        var p2 = aa(30)
+        return x + await p1 + await p2
+    }
+    fun2(40).then(v => console.log(v))
+
+
+    // 可以不返回promise
+    async function aaa(num) {
+        return await setTimeout(() => {
+            return num
+        }, 2000)
+    }
+    var mm = (async (x) => {
+        var p1 = aaa(10);
+        var p2 = aaa(20);
+        console.log('p1', p1)
+        console.log('p2', p2)
+        return x + await p1 + await p2;
+    })(10).then(v => console.log('-----', v))
+    console.log(mm)
+</script>
+
+</html>
