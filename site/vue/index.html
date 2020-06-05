@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue</title>
+    <link rel="stylesheet" href="./main.css">
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue-router/2.7.0/vue-router.min.js"></script>
+    <script src="./el.js"></script>
+    <script src="./data.js"></script>
+    <script src="./methods.js"></script>
+    <script src="./watch.js"></script>
+    <script src="./directives.js"></script>
+    <script src="./components.js"></script>
+    <script src="./router.js"></script>
+    <script src="./init.js"></script>
+</head>
+
+<body>
+    <div id="vue">
+        <div>
+            <router-link to="/foo">Go to Foo</router-link>
+            <router-link to="/bar">Go to Bar</router-link>
+            <router-view></router-view>
+        </div>
+        <div>{{site}}</div>
+        <div v-html="vHtml"></div>
+        <div :class="{'main': useClass}">{{details()}}</div>
+        <div v-if="vIf">v-if</div>
+        <div v-else>v-else</div>
+        <div v-show="vShow">v-show</div>
+        <div @click="bindClick">bindClick</div>
+        <div>
+            <div>{{vInput}}</div>
+            <input type="text" v-model="vInput" @input="bindInput">
+        </div>
+        <div>
+            <span v-for="v in 10">{{v}}</span>
+            <span v-for="v in vForList()">{{v?.a ?? '--'}}</span>
+            <span v-for="(v, k, i) in vForObj()">{{`${i}-${k}-${v}==`}}</span>
+            <span v-for="v in Object.keys(vForObj())">{{v}}</span>
+        </div>
+        <div>vWatch ==> {{vWatch}}</div>
+        <div @click="vWatchAdd">vWatch+</div>
+        <div @click="vWatchPrev">vWatch-</div>
+        <components1></components1>
+        <components2 message="123"></components2>
+        <components2 :message="vInput"></components2>
+        <!-- <input type="text" v-focus> -->
+    </div>
+</body>
+<script>
+    new Vue(init);
+</script>
+
+</html>

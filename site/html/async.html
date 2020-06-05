@@ -12,24 +12,46 @@
 
 </body>
 <script>
-    // get
-    var xmlhttp = new XMLHttpRequest();
-    // readyState 0初始化请求 1建立请求 2接收请求 3处理请求 4完成请求
-    // status 200 404
-    xmlhttp.onreadystatechange = () => {
-        console.log(xmlhttp.readyState)
-        console.log(xmlhttp.status)
-        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-            var data = xmlhttp.responseText;
-            var list = data.split('()');
-            console.log(list)
-            document.title = data;
-            document.body.innerHTML = data;
-            document.body.setAttribute('data-title', data)
+    // var xmlHttp = new XMLHttpRequest();
+    // xmlHttp.open('GET', 'http://127.0.0.1:3000/a.txt', false);
+    // xmlHttp.send();
+    // var v = xmlHttp.responseText;
+    // v = v.replace(/a/g, '')
+    // console.log(1, v)
+
+    var xmlHttp = new XMLHttpRequest();
+    // xmlHttp.open('get', 'a.txt', true);
+    // xmlHttp.send()
+    xmlHttp.onreadystatechange = () => {
+        console.log(xmlHttp.status, xmlHttp.readyState)
+        if (xmlHttp.status === 200 && xmlHttp.readyState === 4) {
+            console.log(xmlHttp.responseText);
         }
     }
-    xmlhttp.open('get', 'a.txt', true)
-    xmlhttp.send();
+    xmlHttp.open('get', 'a.txt', true);
+    xmlHttp.send()
+
+
+
+
+    // // get
+    // var xmlhttp = new XMLHttpRequest();
+    // // readyState 0初始化请求 1建立请求 2接收请求 3处理请求 4完成请求
+    // // status 200 404
+    // xmlhttp.onreadystatechange = () => {
+    //     console.log(xmlhttp.readyState)
+    //     console.log(xmlhttp.status)
+    //     if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+    //         var data = xmlhttp.responseText;
+    //         var list = data.split('()');
+    //         console.log(list)
+    //         document.title = data;
+    //         document.body.innerHTML = data;
+    //         document.body.setAttribute('data-title', data)
+    //     }
+    // }
+    // xmlhttp.open('get', 'a.txt', true)
+    // xmlhttp.send();
 
 
 
