@@ -8,17 +8,16 @@
     <link rel="stylesheet" href="./main.css">
     <script src="./vue.js"></script>
     <script src="./vue-router.js"></script>
-    <script src="./el.js"></script>
-    <script src="./data.js"></script>
-    <script src="./methods.js"></script>
-    <script src="./watch.js"></script>
-    <script src="./directives.js"></script>
-    <script src="./components.js"></script>
-    <script src="./router.js"></script>
-    <script src="./init.js"></script>
+    <script src="./main.js"></script>
 </head>
 
 <body>
+
+    <div>
+        <div class="left">left</div>
+        <div class="right">right</div>
+        <div class="clear">clear</div>
+    </div>
     <div id="vue">
         <div>
             <router-link to="/foo">Go to Foo</router-link>
@@ -51,8 +50,5 @@
         <input type="text" v-focus>
     </div>
 </body>
-<script>
-    new Vue(init);
-</script>
 
 </html>

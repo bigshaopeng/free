@@ -7,5 +7,5 @@
         { path: '/bar', component: Bar }
     ]
 
-    return new VueRouter({ routes })
+    return routes
 }())

@@ -1,3 +1,15 @@
+body {
+    opacity: 0;
+}
 .main {
     color: red;
+}
+.left{
+    float: left;
+}
+.right{
+    float: right;
+}
+.clear{
+    clear: both;
 }
