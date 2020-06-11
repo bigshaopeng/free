@@ -9,8 +9,6 @@ new Promise((resolve) => {
         }
     }, 100)
 }).then(() => {
-
-    console.log(VueRouters)
     const _init = (function () {
         return {
             el: VueEl,
