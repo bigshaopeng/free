@@ -5,7 +5,9 @@ import { ajax } from '../common/ajax'
 
 export class LodashView extends Component {
     ajaxs() {
-        ajax('/file?name=zsp')
+        ajax('post', '/file').then(r => {
+            console.log(r)
+        })
     }
     render() {
         const chunkList = [1, 2, 3, 4, 5]
