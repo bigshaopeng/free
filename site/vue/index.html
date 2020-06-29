@@ -7,6 +7,7 @@
     <title>Vue</title>
     <link rel="stylesheet" href="./main.css">
     <script src="./vue.js"></script>
+    <script src="./vuex.js"></script>
     <script src="./vue-router.js"></script>
     <script src="./main.js"></script>
 </head>
@@ -25,7 +26,7 @@
             <router-view></router-view>
         </div>
         <div>{{site}}</div>
-        <div v-html="vHtml"></div>
+        <div v-html="vHtml.replace(/m/g,'--')"></div>
         <div :class="{'main': useClass}">{{details()}}</div>
         <div v-if="vIf">v-if</div>
         <div v-else>v-else</div>
@@ -40,6 +41,7 @@
             <span v-for="v in vForList()">{{v?.a ?? '--'}}</span>
             <span v-for="(v, k, i) in vForObj()">{{`${i}-${k}-${v}==`}}</span>
             <span v-for="v in Object.keys(vForObj())">{{v}}</span>
+            <span v-for="v in Object.values(vForObj())">{{v}}</span>
         </div>
         <div>vWatch ==> {{vWatch}}</div>
         <div @click="vWatchAdd">vWatch+</div>

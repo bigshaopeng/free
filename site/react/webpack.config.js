@@ -2,13 +2,12 @@ const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack'); //增加导入webpack
 module.exports = {
-    mode: 'development',
+    mode: 'production',
     devtool: 'cheap-module-source-map',
     devServer: {
         historyApiFallback: {
             rewrites: [
-                { from: /^\/$/, to: '/index.html' },
-                { from: /./, to: '/index.html' }
+                { from: /.*/, to: '/index.html' },
             ]
         },
         hot: true, //在devServer中增加hot字段

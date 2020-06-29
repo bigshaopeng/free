@@ -4,6 +4,32 @@ import { HomeView } from '../page/home'
 import { LodashView } from '../page/lodash'
 import { style } from 'typestyle'
 
+export class Router extends Component {
+    render() {
+        const activeLink = location.pathname;
+        return (
+            <BrowserRouter>
+                <div className={sty.linkWrap}>
+                    {navList.map(v =>
+                        <Link
+                            className={`${sty.link} ${v.router === activeLink && sty.activeLink}`}
+                            key={v.name} to={v.router}> {v.name} </Link>
+                    )}
+                </div>
+                <div className={sty.body}>
+                    <Switch>
+                        <Route path='/' exact component={navList[0]['component']} />
+                        {navList.map(v =>
+                            <Route key={v.name} path={v.router} component={v.component} />
+                        )}
+                        {/* <Route component={() => <div> ------page is no</div>} /> */}
+                        <Redirect to='/' />
+                    </Switch>
+                </div>
+            </BrowserRouter >
+        )
+    }
+}
 const navList = [
     {
         name: 'Home',
@@ -12,6 +38,10 @@ const navList = [
     }, {
         name: 'Lodash',
         router: '/lodash',
+        component: LodashView
+    }, {
+        name: 'Antd',
+        router: '/antd',
         component: LodashView
     },
 ]
@@ -41,28 +71,4 @@ const sty = {
         padding: 20,
         minHeight: 100
     })
-}
-export class Router extends Component {
-    render() {
-        const activeLink = location.pathname;
-        return (
-            <BrowserRouter>
-                <div className={sty.linkWrap}>
-                    {navList.map(v =>
-                        <Link key={v.name} className={`${sty.link} ${v.router === activeLink && sty.activeLink}`} to={v.router}> {v.name} </Link>
-                    )}
-                </div>
-                <div className={sty.body}>
-                    <Switch>
-                        <Route path='/' exact component={navList[0]['component']} />
-                        {navList.map(v =>
-                            <Route key={v.name} path={v.router} component={v.component} />
-                        )}
-                        {/* <Route component={() => <div> ------page is no</div>} /> */}
-                        <Redirect to='/' />
-                    </Switch>
-                </div>
-            </BrowserRouter >
-        )
-    }
 }
