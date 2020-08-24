@@ -13,11 +13,20 @@ const GETSQL = (key) => {
         case 4:
             return `INSERT INTO user_center (name, phone) VALUES ('a', '1'), ('b', '2'), ('c', '3')`
         case 5:
-            return `UPDATE user_center SET name=2 WHERE id=3`
+            return `UPDATE user_center SET name=3 WHERE id=3`
+        case 6:
+            return `DROP TABLE zsp`
+        case 7:
+            return `SELECT phone FROM user_center LIMIT 1 OFFSET 2`
     }
 }
-const sql = GETSQL(5);
+const sql = GETSQL(7);
 
-connection.query(sql);
+connection.query(sql, (err, result) => {
+    if (err) {
+        throw err
+    }
+    console.log(result)
+});
 
 connection.end();
