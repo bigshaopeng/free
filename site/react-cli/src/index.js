@@ -3,15 +3,13 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Redirect, Switch, PrivateRoute, Link } from "react-router-dom";
 import HomeView from './page/home';
 import LoginView from './page/login';
-// import "../node_modules/antd/dist/antd.css"
-// import "antd/dist/antd.css";
-import { Input } from 'antd'
+require('!style-loader!css-loader!antd/dist/antd.css');
 
 class TopPage extends React.Component {
 	render() {
 		return (
 			<div>
-				{/*  */}
+				<div className='wrap'>zsp</div>
 				<Router>
 					<Link to="/login">Login</Link>
 					<Link to="/home">Home</Link>
