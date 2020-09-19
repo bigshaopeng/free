@@ -9,10 +9,10 @@ class TopPage extends React.Component {
 	render() {
 		return (
 			<div>
-				<div className='wrap'>zsp</div>
+				{/* <div className='wrap'>zsp</div> */}
 				<Router>
-					<Link to="/login">Login</Link>
-					<Link to="/home">Home</Link>
+					{/* <Link to="/login">Login</Link>
+					<Link to="/home">Home</Link> */}
 					<Switch>
 						<Route path='/' exact component={HomeView} />
 						<Route path="/login" component={LoginView} />

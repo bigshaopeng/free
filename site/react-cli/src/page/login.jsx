@@ -1,10 +1,77 @@
 import React from 'react';
-import { Input, Button } from 'antd';
+import {Input, message} from 'antd';
+import {style} from 'typestyle';
+import {post} from '&/common/ajax';
 
 class LoginView extends React.Component {
-    render() {
-        return <div>Login<Input /><Button>---antd</Button></div>
+    constructor(props){
+        super(props);
+        this.state = {
+            userName: '',
+            password: '',
+        }
     }
+    onSubmit(){
+        const {userName,password} = this.state;
+        if(!userName){
+            message.info('请输入账号');
+            return
+        }
+        if(!password){
+            message.info('请输入密码');
+            return
+        }
+        const data = {
+            userName,
+            password
+        }
+        post('',data).then( res => {
+            console.log(res)
+        })
+    }
+
+    render() {
+        const {userName, password} = this.state;
+        return <div className={sty.loginWrap}>
+                <div className={sty.body}>
+                    <div>
+                        <Input
+                            placeholder="请输入账号"
+                            value={userName}
+                            onChange={e => this.setState({userName: e.target.value})}
+                        />
+                    </div>
+                    <div>
+                        <Input
+                            type="password"
+                            placeholder="请输入密码"
+                            value={password}
+                            onChange={e => this.setState({password:e.target.value})}
+                        />
+                    </div>
+                    <div>
+                        <span onClick={() => this.onSubmit()}>登录</span>
+                    </div>
+                </div>
+            </div>
+    }
+}
+const sty = {
+    loginWrap: style({
+        width: '100%',
+        height: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        background: `url(${require('../image/a.png')}) no-repeat center center / cover`,
+        padding: '20px'
+    }),
+    body: style({
+        width: 600,
+        height: 300,
+        border: '1px solid #ccc',
+        padding: '20px'
+    })
 }
 
 export default LoginView

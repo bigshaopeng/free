@@ -23,7 +23,7 @@ module.exports = {
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
-			title: 'Output Management',
+			title: '电力测温',
 			template: path.resolve(__dirname, './src/index.html'),
 			inject: true,
       		favicon: path.resolve(__dirname, './favicon.ico')
