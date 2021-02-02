@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html >
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>疫情体温历史轨迹查询</title>
+	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css"/>
+	<link rel="stylesheet" type="text/css" href="bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.css"/>
+	<link rel="stylesheet" type="text/css" href="layer/theme/default/layer.css"/>
+	<style>
+		body{
+			overflow: hidden;
+			opacity: 0;
+		}
+		input[type='text']{
+			height: 34px;
+			padding: 6px 12px;
+			font-size: 14px;
+			line-height: 1.42857143;
+			color: #555;
+			background-color: #fff;
+			background-image: none;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+			        box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+			-webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+			     -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+			        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+			width:150px;
+		}
+		button{
+			width:80px;
+			padding:5px 10px;
+			cursor: pointer;
+		}
+	</style>
+</head>
+<body >
+<div>
+	<div style="margin:0 0 4px;padding:5px 0 5px 20px;">
+		<!-- 数据库: <select id="dataBaseEnv" style="outline: none;height:34px;border:1px solid #ccc;border-radius:3px;">
+                    <option value="0" selected>请选择数据库</option>
+                    <option value="1">委办局数据库</option>
+                    <option value="2">阿里云数据库</option>
+                </select> -->
+		<!-- 用户id：<input id="userid" type="text" style="width:300px;" value="e41cd98d0f7e47e2bbd0c828cd121354" autocomplete="off"> -->
+		<!-- 用户id：<input id="userid" type="text" style="width:300px;" placeholder="输入用户id" value="" autocomplete="off"> -->
+		姓名：<span id="userName" style="padding-right: 20px;"></span>
+		开始时间：<input id="startDate" type="text" style="width: 160px;margin-right: 20px;" autocomplete="off">
+		结束时间：<input id="endDate" type="text" style="width: 160px;margin-right: 20px;" autocomplete="off">
+		<button id="queryBtn" class="btn btn-md btn-primary" style="margin-right: 20px;">查询</button>
+		<button id="downloadBtn" class="btn btn-md btn-primary" style="width: auto;margin-right: 20px;">下载轨迹信息</button>
+	</div>
+	<!-- <div>
+        <div style="display:none;">
+            <span>安芯测数据地址：</span>
+            <span id="axc-url"></span>
+        </div>
+        <div>
+            <span>安芯测数据：</span>
+            <input id="axc-data"/>
+        </div>
+    </div> -->
+	<div style="min-height: 400px; width: 100%;" id="map"></div>
+</div>
+
+<script src="js/jquery-1.12.4.min.js"></script>
+<script src="js/CoordinateUtils.js"></script>
+<script src="bootstrap/js/bootstrap.js"></script>
+<script src="bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js"></script>
+<script src="bootstrap-datetimepicker-master/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="layer/layer.js"></script>
+<script src="./js/js-export-excel.js"></script>
+<script type="text/javascript">
+		var userName = getUrlParam('name');
+		var userId = getUrlParam('id');
+		var globalList = [];
+		//    var globalList = [
+		// 	   {"version":null,"createTime":"2021-01-05T09:40:00.000+0800","updateUser":null,"updateTime":null,"archived":0,"id":293967119,"userId":37601718,"longitude":116.6785,"latitude":40.3954,"timepoint":"2021-01-04T08:37:03.000+0800","name":null,"address":null,"useHistory":"0"},
+		// 	   {"version":null,"createTime":"2021-01-05T09:40:00.000+0800","updateUser":null,"updateTime":null,"archived":0,"id":293820518,"userId":37601718,"longitude":116.6785,"latitude":40.3954,"timepoint":"2021-01-05T09:30:08.000+0800","name":null,"address":null,"useHistory":"0"},
+		// 	   {"version":null,"createTime":"2021-01-05T09:40:00.000+0800","updateUser":null,"updateTime":null,"archived":0,"id":293820718,"userId":37601718,"longitude":116.6785,"latitude":40.3954,"timepoint":"2021-01-05T09:31:06.000+0800","name":null,"address":null,"useHistory":"0"},
+		// 	   {"version":null,"createTime":"2021-01-05T09:40:00.000+0800","updateUser":null,"updateTime":null,"archived":0,"id":293820918,"userId":37601718,"longitude":116.6785,"latitude":40.3954,"timepoint":"2021-01-05T09:32:06.000+0800","name":null,"address":null,"useHistory":"0"}
+		// 	];
+		//日期格式化
+		Date.prototype.format = function(format){
+			format = format ? format : 'yyyy-MM-dd hh:00:00';
+			var o = {
+				"M+" : this.getMonth()+1, //month
+				"d+" : this.getDate(), //day
+				"h+" : this.getHours(), //hour
+				"m+" : this.getMinutes(), //minute
+				"s+" : this.getSeconds(), //second
+				"q+" : Math.floor((this.getMonth()+3)/3), //quarter
+				"S"  : this.getMilliseconds() //millisecond
+			}
+
+			if(/(y+)/.test(format)) {
+				format = format.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+			}
+
+			for(var k in o) {
+				if(new RegExp("("+ k +")").test(format)) {
+					format = format.replace(RegExp.$1, RegExp.$1.length==1 ? o[k] : ("00"+ o[k]).substr((""+ o[k]).length));
+				}
+			}
+			return format;
+		}
+		$(function(){
+			$('#userName').html(userName);
+			$('#userid').val(userId);
+
+			var h = $(window).height();
+			$('#map').css({
+				height : (h-60) + 'px'
+			})
+			$(window).resize(function(){
+				var h = $(window).height();
+				$('#map').css({
+					height : h + 'px'
+				})
+			})
+			$('#queryBtn').click(function(){
+				getMapData();
+			});
+
+			let currentTime = new Date().getTime(); //获取当前时间
+			let beginDates = new Date(currentTime - 7*24*3600*1000).format("yyyy-MM-dd 00:00:00"); //开始时间
+			let endDates = new Date(currentTime).format("yyyy-MM-dd hh:00:00"); //结束时间
+
+			//设置开始结束时间
+			$("#startDate").val(beginDates);
+			$("#endDate").val(endDates);
+
+			$('#startDate').datetimepicker({
+				language : 'zh-CN',
+				format : 'yyyy-mm-dd hh:00:00',
+				todayBtn : true,
+				autoclose : true,
+				startView : 2,
+				minView : 1
+			});
+			$('#endDate').datetimepicker({
+				language : 'zh-CN',
+				format : 'yyyy-mm-dd hh:00:00',
+				todayBtn : true,
+				autoclose : true,
+				startView : 2,
+				minView : 1
+			});
+			// 刚进入页面查询一次
+			getMapData();
+			$('#downloadBtn').click(function(){
+				if(globalList.length == 0){
+					return
+				}
+				const rowList = ['序号', '姓名', '时间', '经度','纬度', '对应地点(仅供参考)']
+				var sheetData = [rowList];
+				globalList.map((v, index) => {
+					var position = getAddress2(v.longitude, v.latitude);
+					var obj = [index + 1, userName, v.timepoint, v.longitude, v.latitude, position]
+					sheetData.push(obj)
+				})
+
+
+				const wopts = { bookType: 'xlsx', bookSST: false, type: 'binary' };//这里的数据是用来定义导出的格式类型
+				// const wopts = { bookType: 'csv', bookSST: false, type: 'binary' };//ods格式
+				// const wopts = { bookType: 'ods', bookSST: false, type: 'binary' };//ods格式
+				// const wopts = { bookType: 'xlsb', bookSST: false, type: 'binary' };//xlsb格式
+				// const wopts = { bookType: 'fods', bookSST: false, type: 'binary' };//fods格式
+				// const wopts = { bookType: 'biff2', bookSST: false, type: 'binary' };//xls格式
+				downloadExl(sheetData);
+				function downloadExl(data, type) {
+					const wb = { SheetNames: ['Sheet1'], Sheets: {}, Props: {} };
+					// wb.Sheets['Sheet1'] = XLSX.utils.json_to_sheet(data);//通过json_to_sheet转成单页(Sheet)数据
+					wb.Sheets['Sheet1'] = XLSX.utils.aoa_to_sheet(data);//通过json_to_sheet转成单页(Sheet)数据
+					saveAs(new Blob([s2ab(XLSX.write(wb, wopts))], { type: "application/octet-stream" }), `${userName}轨迹信息` + '.' + (wopts.bookType=="biff2"?"xls":wopts.bookType));
+				}
+
+				function saveAs(obj, fileName) {//当然可以自定义简单的下载文件实现方式
+					var tmpa = document.createElement("a");
+					tmpa.download = fileName || "下载";
+					tmpa.href = URL.createObjectURL(obj); //绑定a标签
+					tmpa.click(); //模拟点击实现下载
+					setTimeout(function () { //延时释放
+						URL.revokeObjectURL(obj); //用URL.revokeObjectURL()来释放这个object URL
+					}, 100);
+				}
+
+				function s2ab(s) {
+					if (typeof ArrayBuffer !== 'undefined') {
+						var buf = new ArrayBuffer(s.length);
+						var view = new Uint8Array(buf);
+						for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+						return buf;
+					} else {
+						var buf = new Array(s.length);
+						for (var i = 0; i != s.length; ++i) buf[i] = s.charCodeAt(i) & 0xFF;
+						return buf;
+					}
+				}
+			})
+		});
+
+		function callDataBase(data){
+			console.log(data);
+		}
+
+		function getMapData() {
+			// let userId = $.trim($('#userid').val());
+			let startDate = $.trim($('#startDate').val());
+			let endDate = $.trim($('#endDate').val());
+			let startDateStr = new Date(startDate).getTime();
+			let endDateStr = new Date(endDate).getTime();
+
+			let url = ''; //环境地址
+			let dataBaseEnv = 2;
+			// let dataBaseEnv = $("#dataBaseEnv").val(); //获取下拉框中的值
+
+			if(dataBaseEnv == 1){ //教委环境地址
+				url = 'https://antiviral.api.hotgrid.cn:6800/api/userfootprint/user/list';
+			}else if(dataBaseEnv == 2){ //阿里云环境地址
+				// url = 'https://www-101.baecsense.com/server/api/userfootprint/user/list';
+				url = 'https://www-102.baecsense.com/antiviral/api/userfootprint/user/list'
+			}else{
+				url = '';
+			}
+
+			if(url == ''){ //是否选择数据库环境
+				layer.open({
+					title: '提示',
+					type : 1,
+					area : ['250px','135px'],
+					shade: 0.4,
+					content: '<div style="color:#000;line-height:90px;text-align:center;">请选择数据库环境</div>'
+				});
+				return
+			}
+
+			// if(userId == undefined || userId == null ||userId == ""){ //是否填写userId
+			if(userId == undefined || userId == null ||userId == ""){ //是否填写userId
+				layer.open({
+					title: '提示',
+					type : 1,
+					area : ['250px','135px'],
+					shade: 0.4,
+					content: '<div style="color:#000;line-height:90px;text-align:center;">用户id不合法</div>'
+				});
+				return
+			}
+
+			if(startDateStr >= endDateStr){ //开始时间不能大于结束时间
+				layer.open({
+					title: '提示',
+					type: 1,
+					area: ['250px','135px'],
+					shade: 0.4,
+					content: '<div style="color:#000;line-height: 90px;text-align:center;">开始时间不能大于结束时间！</div>',
+					shadeClose: true
+				});
+				return
+			}
+
+			if((endDateStr - startDateStr)/1000 > 15*24*3600){ //开始结束时间范围不超过7天
+				layer.open({
+					title: '提示',
+					type: 1,
+					area: ['250px','135px'],
+					shade: 0.4,
+					content: '<div style="color:#000;line-height: 90px;text-align:center;">查询时间不能超过14天！</div>',
+					shadeClose: true
+				});
+				return
+			}
+
+			if((endDateStr - startDateStr)/1000 < 3600){
+				layer.open({
+					title: '提示',
+					type: 1,
+					area: ['250px','135px'],
+					shade: 0.4,
+					content: '<div style="color:#000;line-height:90px;text-align:center;">查询时间最小间隔为1小时！</div>'
+				});
+				return
+			}
+			new Promise((resolve, reject) => {
+				// var datass = {"code":200,"message":"","success":true,"data":[{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294023519,"userId":37653719,"longitude":126.53427,"latitude":43.841953,"timepoint":"2021-01-07T06:03:01.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294023819,"userId":37653719,"longitude":126.53453,"latitude":43.842636,"timepoint":"2021-01-07T06:04:28.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294024019,"userId":37653719,"longitude":126.53417,"latitude":43.84194,"timepoint":"2021-01-07T06:05:26.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294024219,"userId":37653719,"longitude":126.53427,"latitude":43.841972,"timepoint":"2021-01-07T06:06:27.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294024419,"userId":37653719,"longitude":126.5342,"latitude":43.84192,"timepoint":"2021-01-07T06:07:32.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294024519,"userId":37653719,"longitude":126.53419,"latitude":43.841965,"timepoint":"2021-01-07T06:08:02.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294024719,"userId":37653719,"longitude":126.53424,"latitude":43.841957,"timepoint":"2021-01-07T06:09:03.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294024919,"userId":37653719,"longitude":126.53428,"latitude":43.842075,"timepoint":"2021-01-07T06:10:24.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294025119,"userId":37653719,"longitude":126.53421,"latitude":43.84194,"timepoint":"2021-01-07T06:11:23.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294025319,"userId":37653719,"longitude":126.5342,"latitude":43.84202,"timepoint":"2021-01-07T06:12:23.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294025419,"userId":37653719,"longitude":126.53422,"latitude":43.84194,"timepoint":"2021-01-07T06:13:12.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294025619,"userId":37653719,"longitude":126.53414,"latitude":43.841923,"timepoint":"2021-01-07T06:14:10.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294025819,"userId":37653719,"longitude":126.534256,"latitude":43.84198,"timepoint":"2021-01-07T06:15:10.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294026019,"userId":37653719,"longitude":126.53422,"latitude":43.84201,"timepoint":"2021-01-07T06:16:10.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294026219,"userId":37653719,"longitude":126.53425,"latitude":43.841976,"timepoint":"2021-01-07T06:17:10.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294026319,"userId":37653719,"longitude":126.53423,"latitude":43.841938,"timepoint":"2021-01-07T06:19:19.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294026519,"userId":37653719,"longitude":126.53424,"latitude":43.84194,"timepoint":"2021-01-07T06:20:19.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294026619,"userId":37653719,"longitude":126.53424,"latitude":43.84195,"timepoint":"2021-01-07T06:25:07.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294026819,"userId":37653719,"longitude":126.53414,"latitude":43.841934,"timepoint":"2021-01-07T06:26:06.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294027019,"userId":37653719,"longitude":126.53424,"latitude":43.841976,"timepoint":"2021-01-07T06:27:07.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294027119,"userId":37653719,"longitude":126.53424,"latitude":43.841915,"timepoint":"2021-01-07T06:29:09.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294027319,"userId":37653719,"longitude":126.53424,"latitude":43.84193,"timepoint":"2021-01-07T06:30:09.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294027419,"userId":37653719,"longitude":126.53422,"latitude":43.841957,"timepoint":"2021-01-07T06:31:04.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294027619,"userId":37653719,"longitude":126.53428,"latitude":43.841972,"timepoint":"2021-01-07T06:32:03.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294027819,"userId":37653719,"longitude":126.534325,"latitude":43.842014,"timepoint":"2021-01-07T06:33:20.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294028019,"userId":37653719,"longitude":126.53422,"latitude":43.841957,"timepoint":"2021-01-07T06:34:20.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294028219,"userId":37653719,"longitude":126.534225,"latitude":43.841965,"timepoint":"2021-01-07T06:35:20.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294028419,"userId":37653719,"longitude":126.53418,"latitude":43.842,"timepoint":"2021-01-07T06:36:21.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294028619,"userId":37653719,"longitude":126.5342,"latitude":43.842014,"timepoint":"2021-01-07T06:37:21.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294028819,"userId":37653719,"longitude":126.53425,"latitude":43.841976,"timepoint":"2021-01-07T06:38:20.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294029019,"userId":37653719,"longitude":126.53419,"latitude":43.841923,"timepoint":"2021-01-07T06:39:21.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294029219,"userId":37653719,"longitude":126.534195,"latitude":43.842003,"timepoint":"2021-01-07T06:40:21.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294029419,"userId":37653719,"longitude":126.534195,"latitude":43.842003,"timepoint":"2021-01-07T06:41:20.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294029619,"userId":37653719,"longitude":126.53421,"latitude":43.841934,"timepoint":"2021-01-07T06:42:20.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294029819,"userId":37653719,"longitude":126.53421,"latitude":43.841965,"timepoint":"2021-01-07T06:43:20.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294030019,"userId":37653719,"longitude":126.53418,"latitude":43.84198,"timepoint":"2021-01-07T06:45:52.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294030119,"userId":37653719,"longitude":126.53418,"latitude":43.84198,"timepoint":"2021-01-07T06:46:21.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294030319,"userId":37653719,"longitude":126.534225,"latitude":43.841957,"timepoint":"2021-01-07T06:47:21.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294030519,"userId":37653719,"longitude":126.53418,"latitude":43.841938,"timepoint":"2021-01-07T06:48:22.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T07:00:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":294030719,"userId":37653719,"longitude":126.53424,"latitude":43.84198,"timepoint":"2021-01-07T06:49:22.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T08:50:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":293893018,"userId":37653719,"longitude":126.53419,"latitude":43.84196,"timepoint":"2021-01-07T06:50:21.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T10:20:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":293893218,"userId":37653719,"longitude":126.53426,"latitude":43.84201,"timepoint":"2021-01-07T08:49:09.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T10:20:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":293893418,"userId":37653719,"longitude":126.53426,"latitude":43.841953,"timepoint":"2021-01-07T08:50:07.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T10:20:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":293893618,"userId":37653719,"longitude":126.53426,"latitude":43.841953,"timepoint":"2021-01-07T08:51:06.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T10:20:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":293893718,"userId":37653719,"longitude":126.53415,"latitude":43.841995,"timepoint":"2021-01-07T08:58:58.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T10:20:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":293893818,"userId":37653719,"longitude":126.53415,"latitude":43.841995,"timepoint":"2021-01-07T08:59:27.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T10:20:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":293894018,"userId":37653719,"longitude":126.53422,"latitude":43.841908,"timepoint":"2021-01-07T09:40:42.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T10:20:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":293894118,"userId":37653719,"longitude":126.53422,"latitude":43.841908,"timepoint":"2021-01-07T09:41:11.000+0000","name":null,"address":null,"useHistory":"0"},{"version":null,"createTime":"2021-01-07T10:20:00.000+0000","updateUser":null,"updateTime":null,"archived":0,"id":293894318,"userId":37653719,"longitude":126.534225,"latitude":43.841953,"timepoint":"2021-01-07T09:42:11.000+0000","name":null,"address":null,"useHistory":"0"}]}
+				// setTimeout(() => {
+				// 	resolve(datass)
+				// }, 1000);
+				// return
+				if(dataBaseEnv == 2){
+					$.ajax({
+						url: url,
+						type: 'GET',
+						headers:{
+							"Access-Control-Allow-Origin": "*",
+							"Content-Type": "application/json;charset=UTF-8"
+						},
+						data: {
+							'userId' : userId,
+							'startDate' : startDate,
+							'endDate' : endDate
+						},
+						success: function(data){
+							resolve(data);
+						},
+						error: function(err){
+							$('body').css('opacity', 1);
+							console.log(err);
+						}
+					})
+				}else{
+					$.ajax({
+						url : url,
+						type: 'GET',
+						data: {
+							'userId' : userId,
+							'startDate' : startDate,
+							'endDate' : endDate
+						},
+						success:function(data){
+							resolve(data)
+						},
+						error:function(err){
+							$('body').css('opacity', 1);
+							var tempP0 = 116.390814;
+							var tempP1 = 39.915811;
+							var lnglatCenter = coord.gcj02tobd09(tempP0, tempP1);
+								tempP0 = lnglatCenter[0];
+								tempP1 = lnglatCenter[1];
+							var lnglatCenter_1 = coord.wgs84togcj02(tempP0, tempP1);
+								tempP0 = lnglatCenter_1[0];
+								tempP1 = lnglatCenter_1[1];
+							var tempPoint1 = new BMap.Point(tempP0, tempP1);
+							map.centerAndZoom(tempPoint1, 14);
+						}
+					})
+				}
+			}).then(data => {
+				$('body').css('opacity', 1);
+						map.clearOverlays();
+						var list = data && data['data'] || [];
+						globalList = list;
+						let markerArr = [];
+						var coord = new CoordUtils();
+						var points = new Array();
+
+						for(var i = 0; i < list.length; i++){
+							var o = list[i];
+							var time = new Date(o.timepoint).format('yyyy-MM-dd hh:mm:ss');
+							var obj = {
+								title: (i+1),
+								point: o.longitude + "," + o.latitude,
+								time: time
+							}
+							markerArr.push(obj);
+						}
+						// 第7步：绘制点
+						for (var i = 0; i < markerArr.length; i++) {
+							var o = markerArr[i];
+							var p00 = o.point.split(",")[0];
+							var p11 = o.point.split(",")[1];
+							var p0 = o.point.split(",")[0];
+							var p1 = o.point.split(",")[1];
+							var lnglat = coord.gcj02tobd09(p0, p1);//经纬度纠偏
+								p0 = lnglat[0];
+								p1 = lnglat[1];
+							var lnglat_1 = coord.wgs84togcj02(p0, p1);
+								p0 = lnglat_1[0];
+								p1 = lnglat_1[1];
+							var time = o.time;
+							var maker = addMarker(new window.BMap.Point(p0, p1), (i+1), time, p00, p11);
+							addInfoWindow(maker, o);
+						}
+						// 绘制点
+						for (var i = 0; i < markerArr.length; i++) {
+							var o = markerArr[i];
+							var p0 = o.point.split(",")[0];
+							var p1 = o.point.split(",")[1];
+							var lnglat = coord.gcj02tobd09(p0, p1);//经纬度纠偏
+								p0 = lnglat[0];
+								p1 = lnglat[1];
+							var lnglat_1 = coord.wgs84togcj02(p0, p1);
+								p0 = lnglat_1[0];
+								p1 = lnglat_1[1];
+							var thePoint1 = new BMap.Point(p0, p1);
+							points.push(thePoint1);
+						}
+
+						drawPolyline(map, points);
+
+						if(markerArr.length > 0){
+							var temp = markerArr[0];
+							var tempP0 = o.point.split(",")[0];
+							var tempP1 = o.point.split(",")[1];
+						}else{ //默认经纬度
+							var tempP0 = 116.390814;
+							var tempP1 = 39.915811;
+						}
+
+						var lnglatCenter = coord.gcj02tobd09(tempP0, tempP1);
+							tempP0 = lnglatCenter[0];
+							tempP1 = lnglatCenter[1];
+						var lnglatCenter_1 = coord.wgs84togcj02(tempP0, tempP1);
+							tempP0 = lnglatCenter_1[0];
+							tempP1 = lnglatCenter_1[1];
+						var tempPoint1 = new BMap.Point(tempP0, tempP1);
+
+						map.centerAndZoom(tempPoint1, 14);
+				});
+
+			// })
+		}
+
+		var map; //Map实例
+		var my = {title: "我的位置"};
+		var currentLon = 116.390814; //默认经纬度
+		var currentLat = 39.915811;
+		var coord = new CoordUtils();
+		var lnglat1 = coord.gcj02tobd09(currentLon, currentLat);//经纬度纠偏
+		currentLon = lnglat1[0];
+		currentLat = lnglat1[1];
+		var lnglat2 = coord.wgs84togcj02(currentLon, currentLat);
+		currentLon = lnglat2[0];
+		currentLat = lnglat2[1];
+
+		function map_init() {
+			map = new BMap.Map("map");
+			//第1步：设置地图中心点，当前城市
+			var point = new BMap.Point(currentLon, currentLat);
+			//第2步：初始化地图,设置中心点坐标和地图级别。
+			map.centerAndZoom(point, 14);
+			//第3步：启用滚轮放大缩小
+			map.enableScrollWheelZoom(true);
+			//第4步：向地图中添加缩放控件
+			var ctrlNav = new window.BMap.NavigationControl({
+				anchor: BMAP_ANCHOR_TOP_LEFT,
+				type: BMAP_NAVIGATION_CONTROL_LARGE
+			});
+			map.addControl(ctrlNav);
+			//第5步：向地图中添加缩略图控件
+			var ctrlOve = new window.BMap.OverviewMapControl({
+				anchor: BMAP_ANCHOR_BOTTOM_RIGHT,
+				isOpen: 1
+			});
+			map.addControl(ctrlOve);
+
+			//第6步：向地图中添加比例尺控件
+			var ctrlSca = new window.BMap.ScaleControl({
+				anchor: BMAP_ANCHOR_BOTTOM_LEFT
+			});
+			map.addControl(ctrlSca);
+		}
+
+		// 添加信息窗口
+		function addInfoWindow(marker, poi) {
+			var label = new window.BMap.Label(poi.title, {
+				offset: new window.BMap.Size(2, 1)
+			});
+			marker.setLabel(label);
+
+			var clo = "";
+			if("我的位置" == poi.title){
+				clo = "#FF5782";
+			}else{
+				clo = "#E6FED";
+			}
+
+			label.setStyle({
+				color: "#333",
+				fontSize: "16px",
+				backgroundColor: "0.7",
+				border: "0",
+				fontWeight: "bold"
+			});
+
+			var info = new window.BMap.InfoWindow(poi.time); // 创建信息窗口对象
+			var openInfoWinFun = function () {
+				this.openInfoWindow(info);
+			};
+			marker.addEventListener("mouseover", openInfoWinFun);
+		}
+
+		// 添加标注
+		function addMarker(point, index, time, longitude, latitude) {
+			var index1 = 11;
+			var myIcon = new BMap.Icon("https://api.map.baidu.com/img/markers.png",
+				new BMap.Size(23, 25), {
+					offset: new BMap.Size(10, 25),
+					imageOffset: new BMap.Size(0, 0 - index1 * 25)
+				}
+			);
+			var marker = new BMap.Marker(point, {
+				icon: myIcon
+			});
+			map.addOverlay(marker);
+
+			var opts = {
+				width : 200,     // 信息窗口宽度
+				//height: 150,     // 信息窗口高度
+				title : "详细信息" , // 信息窗口标题
+				enableMessage: true,//设置允许信息窗发送短息
+				message: "亲耐滴，晚上一起吃个饭吧？戳下面的链接看下地址喔~"
+			}
+			var msg = "点位号：" + index + "<br>时间：" + time + "<br>" + "经度：" + longitude + "<br>" + "纬度：" + latitude;
+			// var infoWindow = new BMap.InfoWindow(msg, opts);  // 创建信息窗口对象
+
+			marker.addEventListener("click", function(){
+				if(msg.indexOf('地点名称') == -1){
+					getAddress(longitude, latitude).then(res => {
+						if(res){
+							msg = `${msg}<br/>地点名称（仅供参考）：${res.formatted_address}`
+							var infoWindow = new BMap.InfoWindow(msg, opts);
+							map.openInfoWindow(infoWindow,point);
+							return
+						}
+						map.openInfoWindow(infoWindow,point);
+					}) ;
+				}else{
+					var infoWindow = new BMap.InfoWindow(msg, opts);
+						map.openInfoWindow(infoWindow,point);
+				}
+			});
+
+			return marker;
+		}
+
+		//异步调用百度js
+		function map_load() {
+			var load = document.createElement("script");
+			var loads = document.createElement("script");
+			// load.src = "https://api.map.baidu.com/api?v=1.4&callback=map_init";
+			load.src = "./js/map-api.js";
+			loads.src = "./js/map.js";
+
+			document.body.appendChild(load);
+			document.body.appendChild(loads);
+		}
+
+		/**
+		* 画线
+		* @param bMap
+		* @param points
+		*/
+		function drawPolyline(bMap, points) {
+			if (points == null || points.length <= 1) {
+				return;
+			}
+			bMap.addOverlay(new BMap.Polyline(points, {
+				strokeColor: "blue",
+				strokeWeight: 3,
+				strokeOpacity: 0.6
+			})); // 画线
+		}
+		function getUrlParam(key){
+			// 获取参数
+			var url = window.location.search;
+			//window.search 取到的是一串带参数的字符串，如：?p=广东&c=珠海
+
+			// 正则筛选地址栏
+			var reg = new RegExp("(^|&)"+ key +"=([^&]*)(&|$)");
+			// 匹配目标参数
+			var result = url.substr(1).match(reg);
+			//返回参数值
+			var res = result ? decodeURIComponent(result[2]) : null;
+			return res
+		}
+		function getSearch(){
+			var args=[];
+			var str=location.search.length>0?location.search.substring(1):"";
+			var arrs=str.split("&");
+			var item=null,m=null,n=null;
+			for (var i=0;i<arrs.length;i++){
+				item=arrs[i].split("=");
+				m=item[0];
+				n=item[1];
+				args[m]=n;
+			}
+			return args;
+		}
+		function getAddress(lon, lat){
+			const url = 'https://api.tianditu.gov.cn/geocoder?postStr={"lon":'+lon+',"lat":'+lat+',"ver":1}&type=geocode&tk=4cc6ff9afaba7eab548d95195c540250';
+			return new Promise((resolve, reject) => {
+				$.ajax({
+					url,
+					type: 'GET',
+					contentType: "application/json;charset=UTF-8",
+					dataType: 'json',
+					success: (res) => {
+						if(res.status == '0'){
+							resolve(res.result)
+						}
+						resolve(false)
+					},
+					fail: (err) => {
+						reject(false)
+					}
+				})
+			})	
+		}
+		function getAddress2(lon, lat){
+			const url = 'https://api.tianditu.gov.cn/geocoder?postStr={"lon":'+lon+',"lat":'+lat+',"ver":1}&type=geocode&tk=4cc6ff9afaba7eab548d95195c540250';
+			let str = ''
+			$.ajax({
+				url,
+				type: 'GET',
+				contentType: "application/json;charset=UTF-8",
+				dataType: 'json',
+				async: false,
+				success: (res) => {
+					if(res.status == '0'){
+						str = res.result.formatted_address || ''
+					}else{
+						str = ''
+					}
+				},
+				fail: (err) => {
+					str = ''
+				}
+			})
+			
+			return str
+		}
+		window.onload = map_load;
+	</script>
+</body>
+<!-- <script src="./js/map.js"></script> -->
+</html>
