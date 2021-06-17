@@ -47,7 +47,7 @@ exports.start = function () {
 }
 
 require('../route/index')();
-require('../api/local_post')();
-require('../api/local_get')();
-// require('../api/post')();
-// require('../api/get')();
+// require('../api/local_post')();
+// require('../api/local_get')();
+require('../api/post')();
+require('../api/get')();
