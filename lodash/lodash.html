@@ -16,8 +16,12 @@
     var aa = [1, 2, 3, 4]
     var i = _.indexOf(aa, 4)
     var l = _.clone(aa);
-    var n = _.now()
-    console.log(i, l)
+    l[5] = 5;
+    aa[6] = 6;
+    var m = _.slice(aa, 2)
+    // var n = _.now()
+    console.log(i, l, aa)
+    console.log(m)
 </script>
 
 </html>
