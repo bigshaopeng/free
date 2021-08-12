@@ -2,7 +2,7 @@
 <html>
     <head> 
         <meta charset="utf-8"> 
-        <title>菜鸟教程(runoob.com)</title> 
+        <title>Worker</title> 
     </head>
 <body>
  
@@ -14,14 +14,15 @@
  
     <script>
         var w;
+        // startWorker();
         // console.log(Worker)
         function startWorker() {
             if(typeof(Worker) !== "undefined") {
                 if(typeof(w) == "undefined") {
-                    console.log(window)
                     w = new Worker("worker.js");
                 }
                 w.onmessage = function(event) {
+                    console.log('event', event)
                     if(event.data > 10){
                         w.terminate();
                     }
