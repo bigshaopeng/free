@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div>输入框： <input type="text" v-model="showBody" @input="bodyChange">{{unit}}</div>
+        <div>输入框展示内容：{{showBody}}</div>
+        <div>输入康保存内容：{{saveBody}}</div>
+    </div>
+</body>
+<script>
+    function toThousands(num) {
+        var list = (num || 0).toString().split('').reverse();
+        var result = '';
+        console.log(list)
+
+        list.map((v, index) => result = result + v + (((index + 1) % 3 == 0 && (index + 1) < list.length) ? ',' : ''))
+        result = result.split('').reverse().join('');
+        console.log(result)
+        return result
+    }
+    new Vue({
+      el: '#app',
+      data: {
+        unit: '%',
+        showBody: 0,
+        saveBody: ''
+      },
+      methods: {
+        bodyChange(e) {
+            
+            const v = parseFloat(e.target.value.replace(/,/g, ''));
+
+            if(isNaN(v)){
+                console.log(this.showBody, 'isNaN', v)
+                this.showBody = this.showBody
+                return
+            }
+            this.showBody = toThousands(v)
+            this.saveBody = v
+        }
+      }
+    })
+</script>
+</html>

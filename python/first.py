@@ -4,6 +4,6 @@
 a,b = 1,2
 while b < 10 :
     # print (b, end='')
-    a, b = a, a+b
+    a, b = a, a + b
 
 print(a, b)
