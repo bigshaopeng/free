@@ -21,12 +21,18 @@ from maxss import maxss
 # print(l, l[0], l[1])
 
 l = [{'a': 'aa', 'b': 'bb'}, {'c': 'cc'}]
+
 k_set = set(l[0].keys())  # 转集合--set {a, b}
-k_tuple = tuple(l[0].keys())  # 转元组--tuple (a, b)
-k_list = list(l[0].keys())  # 转列表--list [a, b]
+k_set.add('add')
 print(k_set)
+
+k_tuple = tuple(l[0].keys())  # 转元组--tuple (a, b)
 print(k_tuple)
+
+k_list = list(l[0].keys())  # 转列表--list [a, b]
+k_list.append('append')
 print(k_list)
+
 # for i in range(len(l)):
 # print(l[i].keys())
 
