@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python-Mysql</title>
+    <script src="./jquery.js"></script>
+</head>
+<body>
+
+    <div id="app">
+        <span id="getInfo">获取信息</span>
+    </div>
+
+</body>
+
+<script>
+    $(() => {
+        $('#getInfo').on('click', getInfo)
+    })
+
+    function getInfo(){
+        console.log('getinfo')
+        $.ajax({
+            url: 'http://127.0.0.1:8000/login',
+            type: 'POST',
+            success(r){
+                console.log('success', JSON.parse(r))
+            },
+            error(err){
+                console.log('error', err)
+            }
+        })
+    }
+
+    
+</script>
+
+<style>
+    #app{
+        position: absolute;
+        left: 10px;
+        right: 10px;
+        top: 10px;
+        bottom: 10px;
+        border: 1px solid pink;
+    }
+    span{
+        display: inline-block;
+        padding: 5px 10px;
+        border: 1px solid plum;
+        cursor: pointer;
+        margin: 10px;
+    }
+</style>
+</html>

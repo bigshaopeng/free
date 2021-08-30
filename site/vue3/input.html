@@ -14,12 +14,15 @@
         #app::after{
             content: '\2665';
         }
+        #app::before{
+            content: '\2665';
+        }
     </style>
 </head>
 <body>
     <div id="app">
         <div>&#9829; 或 &#x2665;</div>
-        <div>输入框： <input type="text" v-model="showBody" @input="bodyChange">{{unit}}</div>
+        <div>输入框： <input style="color: red;" type="text" v-model="showBody" @input="bodyChange">{{unit}}</div>
         <div>输入框展示内容：{{showBody}}</div>
         <div>输入康保存内容：{{saveBody}}</div>
         <div @click="getAjax">获取ajax</div>
