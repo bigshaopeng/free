@@ -11,7 +11,7 @@ CORS(app, supports_credentials=True)
 # @cross_origin(supports_credentials=True)
 
 
-@app.route('/login', methods=['POST', 'GET'])
+@app.route('/login', methods=['POST'])
 def login():
     if request.method == 'POST':
         # mysql 连接查询
