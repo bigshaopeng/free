@@ -26,7 +26,7 @@
       },
       methods: {
         getInfo(){
-            ajax({url: '/quit', type: 'post'}).then(r => this.info = JSON.stringify(r))
+            ajax({url: '/login', type: 'post'}).then(r => this.info = JSON.stringify(r))
         }
       }
     })

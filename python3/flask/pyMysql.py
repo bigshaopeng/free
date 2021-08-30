@@ -14,20 +14,21 @@ def get_connection():
     return connect
 
 
-# conn = get_connection()
+def sql_handle(sql):
+    conn = get_connection()
 
-# # 使用 cursor() 方法创建一个 dict 格式的游标对象 cursor
-# cursor = conn.cursor(pymysql.cursors.DictCursor)
+    # 使用 cursor() 方法创建一个 dict 格式的游标对象 cursor
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
 
-# # 使用 execute()  方法执行 SQL 查询
-# cursor.execute("select * from a_user")
+    # 使用 execute()  方法执行 SQL 查询
+    cursor.execute(sql)
 
-# # 使用 fetchone() 方法获取单条数据.
-# data = cursor.fetchone()
+    # 使用 fetchone() 方法获取单条数据.
+    # data = cursor.fetchone()
+    data = cursor.fetchall()
 
-# print(11, cursor)
-# # print("-- 当前数量: %d " % data['total'])
+    # 关闭数据库连接
+    cursor.close()
+    conn.close()
 
-# # 关闭数据库连接
-# cursor.close()
-# conn.close()
+    return data
