@@ -12,7 +12,7 @@
 
     <div id="app">
         <div>
-            <input type="text" v-model="userID" placeholder="userID">
+            <input type="number" v-model="userID" placeholder="userID">
             <input type="text" v-model="userName" placeholder="userName">
         </div>
         <span v-for="(item, index) in btnList" :key="index" @click="event(item.event)">{{item.value}}</span>
@@ -71,6 +71,11 @@
             const sql = `DELETE FROM a_user_info`
             const option = {url: '/sqlHandle', type: 'post', data: {sql}}
             this.ajax(option)
+        },
+        getOnlyName(){
+            const sql = `SELECT DISTINCT name, phone, gender FROM a_user_info`
+            const option = {url: '/sqlHandle', type: 'post', data: {sql}}
+            this.ajax(option)
         }
       }
     })
@@ -83,6 +88,7 @@
             {value: '更新用户信息', event: 'update'},
             {value: '登录', event: 'login'},
             {value: '清空用户', event: 'clearDelete'},
+            {value: '获取唯一用户列表', event: 'getOnlyName'},
             {value: 'Console', event: 'setConsole'},
         ]
     }
