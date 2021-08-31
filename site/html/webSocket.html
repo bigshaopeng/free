@@ -17,7 +17,9 @@
         console.log('success websocket');
         // const ws = new WebSocket('ws://192.168.5.50:8181');
         // const ws = new WebSocket('ws://localhost:8181');
-        const ws = new WebSocket('ws://api-dev.mvs.baecsense.com:6080/server/api/mvs/webSocket/34810504');
+        // const ws = new WebSocket('ws://api-dev.mvs.baecsense.com:6080/server/api/mvs/webSocket/34810504');
+        const ws = new WebSocket('ws://192.168.4.3:8181');
+
         
         ws.onopen = () => {
             console.log('open')
