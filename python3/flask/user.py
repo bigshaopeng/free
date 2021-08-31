@@ -9,8 +9,9 @@ def user(app):
     def login():
         # body = request.args or {}  # get
         body = request.json or {}  # post
-        print(body)
-        data = sql_handle("select * from a_user")
+        print(body['id'])
+        data = sql_handle(
+            "select * from a_user_info WHERE id={id}".format(id=body['id']))
         res = {'msg': data, 'code': 200}
         return json.dumps(res, ensure_ascii=False)
 

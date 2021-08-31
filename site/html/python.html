@@ -11,6 +11,10 @@
 <body>
 
     <div id="app">
+        <div>
+            <input type="text" v-model="userID" placeholder="userID">
+            <input type="text" v-model="userName" placeholder="userName">
+        </div>
         <span v-for="(item, index) in btnList" :key="index" @click="event(item.event)">{{item.value}}</span>
         <div id="info">{{info}}</div>
     </div>
@@ -21,6 +25,8 @@
     new Vue({
       el: '#app',
       data: {
+        userID: '',
+        userName: '',
         info: '--',
         btnList: btnList()
       },
@@ -47,10 +53,25 @@
             this.ajax(option)
         },
         insertInto(){
-            const sql = `INSERT INTO a_user_info VALUES (1, 'zsp', '13500000000', 0)`
+            const sql = `INSERT INTO a_user_info (name, phone, gender) VALUES ('${this.userName}', '13500000000', 0)`
             const option = {url: '/sqlHandle', type: 'post', data: {sql}}
             this.ajax(option)
         },
+        login(){
+            // const sql = `INSERT INTO a_user_info (name, phone, gender) VALUES ('zsp', '13500000000', 0)`
+            const option = {url: '/login', type: 'post', data: {id: this.userID ? parseInt(this.userID) : -1}}
+            this.ajax(option)
+        },
+        update(){
+            const sql = `UPDATE a_user_info SET name='${this.userName}' WHERE id=${this.userID ? parseInt(this.userID) : -1}`
+            const option = {url: '/sqlHandle', type: 'post', data: {sql}}
+            this.ajax(option)
+        },
+        clearDelete(){
+            const sql = `DELETE FROM a_user_info`
+            const option = {url: '/sqlHandle', type: 'post', data: {sql}}
+            this.ajax(option)
+        }
       }
     })
 
@@ -59,6 +80,9 @@
             {value: '获取信息', event: 'getInfo'},
             {value: '创建用户信息', event: 'createTable'},
             {value: '新建用户信息', event: 'insertInto'},
+            {value: '更新用户信息', event: 'update'},
+            {value: '登录', event: 'login'},
+            {value: '清空用户', event: 'clearDelete'},
             {value: 'Console', event: 'setConsole'},
         ]
     }

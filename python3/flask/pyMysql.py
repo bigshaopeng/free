@@ -26,11 +26,11 @@ def sql_handle(sql, type=False):
 
     # 使用 fetchone() 方法获取单条数据.
     # data = cursor.fetchone()
-    data = ''
     if type == True:
-        data = '操作成功'
-    else:
-        data = cursor.fetchall()
+        # 增删改 的时候必须commit 才能提交到库
+        conn.commit()
+
+    data = cursor.fetchall()
 
     # 关闭数据库连接
     cursor.close()
