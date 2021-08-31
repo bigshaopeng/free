@@ -14,18 +14,23 @@ def get_connection():
     return connect
 
 
-def sql_handle(sql):
+def sql_handle(sql, type=False):
     conn = get_connection()
 
     # 使用 cursor() 方法创建一个 dict 格式的游标对象 cursor
     cursor = conn.cursor(pymysql.cursors.DictCursor)
 
+    print('sql--', type, sql)
     # 使用 execute()  方法执行 SQL 查询
     cursor.execute(sql)
 
     # 使用 fetchone() 方法获取单条数据.
     # data = cursor.fetchone()
-    data = cursor.fetchall()
+    data = ''
+    if type == True:
+        data = '操作成功'
+    else:
+        data = cursor.fetchall()
 
     # 关闭数据库连接
     cursor.close()

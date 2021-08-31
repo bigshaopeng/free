@@ -22,25 +22,43 @@
       el: '#app',
       data: {
         info: '--',
-        btnList: btnList
+        btnList: btnList()
       },
       methods: {
         event(event){
             this[event]()
         },
-        getInfo(){
-            const option = {url: '/login', type: 'post', data: {name: 'zsp'}}
-            ajax(option).then(r => this.info = JSON.stringify(r))
+        ajax(option){
+            ajax(option).then(r => {
+                console.log(r)
+                this.info = JSON.stringify(r)
+            })
         },
         setConsole(){
             console.log('%c 11', 'color: pink; font-size: 20px;')
-        }
+        },
+        getInfo(){
+            const option = {url: '/login', type: 'post', data: {name: 'zsp'}}
+            this.ajax(option)
+        },
+        createTable(){
+            const sql = `CREATE TABLE a_user_info (id INT UNSIGNED AUTO_INCREMENT, name VARCHAR(10), phone CHAR(11), gender INT, PRIMARY KEY (id))`
+            const option = {url: '/sqlHandle', type: 'post', data: {sql}}
+            this.ajax(option)
+        },
+        insertInto(){
+            const sql = `INSERT INTO a_user_info VALUES (1, 'zsp', '13500000000', 0)`
+            const option = {url: '/sqlHandle', type: 'post', data: {sql}}
+            this.ajax(option)
+        },
       }
     })
 
     function btnList(){
         return [
             {value: '获取信息', event: 'getInfo'},
+            {value: '创建用户信息', event: 'createTable'},
+            {value: '新建用户信息', event: 'insertInto'},
             {value: 'Console', event: 'setConsole'},
         ]
     }

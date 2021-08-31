@@ -2,6 +2,7 @@ from flask import Flask, url_for, request, render_template, json
 from flask_cors import CORS, cross_origin
 from pyMysql import get_connection
 from user import user
+from sqlHandle import sqlHandle
 
 import pymysql
 
@@ -12,6 +13,7 @@ CORS(app, supports_credentials=True)
 # 单接口跨域--失败
 # @cross_origin(supports_credentials=True)
 
+sqlHandle(app)
 user(app)
 # @app.route('/login', methods=['POST'])
 # def login():
