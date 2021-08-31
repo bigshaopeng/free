@@ -11,25 +11,39 @@
 <body>
 
     <div id="app">
-        <span @click="getInfo">获取信息</span>
+        <span v-for="(item, index) in btnList" :key="index" @click="event(item.event)">{{item.value}}</span>
         <div id="info">{{info}}</div>
     </div>
 
 </body>
 
 <script>
-    
     new Vue({
       el: '#app',
       data: {
-        info: '--'
+        info: '--',
+        btnList: btnList
       },
       methods: {
+        event(event){
+            this[event]()
+        },
         getInfo(){
-            ajax({url: '/login', type: 'post', data: {name: 'zsp'}}).then(r => this.info = JSON.stringify(r))
+            const option = {url: '/login', type: 'post', data: {name: 'zsp'}}
+            ajax(option).then(r => this.info = JSON.stringify(r))
+        },
+        setConsole(){
+            console.log('%c 11', 'color: pink; font-size: 20px;')
         }
       }
     })
+
+    function btnList(){
+        return [
+            {value: '获取信息', event: 'getInfo'},
+            {value: 'Console', event: 'setConsole'},
+        ]
+    }
 
     function ajax(option){
         const hostUrl = 'http://192.168.4.3:8000/'
