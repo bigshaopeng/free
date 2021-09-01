@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hook-Function</title>
+</head>
+<body>
+    
+</body>
+<script>
+    export default {
+        beforeCreate(){
+            // ...
+        }, 
+        created(){
+            // ...
+        },
+        beforeMount(){
+            // ...
+        },
+        mounted(){
+            // ...
+        },
+        beforeDestroy(){
+            // ...
+        },
+        destroyed(){
+            // ...
+        },
+        beforeUpdate(){
+            // ...
+        },
+        updated(){
+            // ...
+        },
+    }
+</script>
+<script>
+    import { 
+        onBeforeMount, onMounted, onBeforeUpdate, onUpdated, onBeforeUnmount, 
+        onUnmounted, onActivated, onDeactivated, onErrorCaptured 
+    } from 'vue'
+
+    export default {
+        setup() {
+            onBeforeMount(() => {
+                // ... 
+            })
+            onMounted(() => {
+                // ... 
+            })
+            onBeforeUpdate(() => {
+                // ... 
+            })
+            onUpdated(() => {
+                // ... 
+            })
+            onBeforeUnmount(() => {
+                // ... 
+            })
+            onUnmounted(() => {
+                // ... 
+            })
+            onActivated(() => {
+                // ... 
+            })
+            onDeactivated(() => {
+                // ... 
+            })
+            onErrorCaptured(() => {
+                // ... 
+            })
+        }
+    }
+</script>
+</html>
