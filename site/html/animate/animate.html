@@ -7,11 +7,21 @@
     <title>Animate.css</title>
     <link rel="stylesheet" href="./animate.css">
     <script src="../../vue/vue.js"></script>
+    <style>
+        #dowebok{
+            width: 50px;
+            height: 50px;
+            background: powderblue;
+        }
+    </style>
 </head>
 <body>
     <div id="app">
-        <span v-for="(item, index) in btnList" :key="index" @click="animate(item.type)" style="cursor: pointer;display: inline-block;margin: 10px;background: plum;">{{item.desc}}</span>
-        <div :class="bindClass" id="dowebok">animate</div>
+        <span 
+            v-for="(item, index) in btnList" :key="index" @click="animate(item.type)" 
+            style="cursor: pointer;display: inline-block;margin: 10px;background: plum;">
+            {{index}}--{{item.desc || item.type}}</span>
+        <div :class="bindClass" id="dowebok"></div>
     </div>
 </body>
 <script>
@@ -52,6 +62,77 @@
             {type: 'rotateOut', desc: '旋转（rotateOut）'},
             {type: 'fadeIn', desc: '淡入淡出（fadeIn）'},
             {type: 'fadeOut', desc: '淡入淡出（fadeOut）'},
+            {type: 'pulse', desc: ''},
+            {type: 'rubberBand', desc: ''},
+            {type: 'shake', desc: ''},
+            {type: 'swing', desc: ''},
+            {type: 'tada', desc: ''},
+            {type: 'wobble', desc: ''},
+            {type: 'bounceIn', desc: ''},
+            {type: 'bounceInDown', desc: ''},
+            {type: 'bounceInLeft', desc: ''},
+            {type: 'bounceInRight', desc: ''},
+            {type: 'bounceInUp', desc: ''},
+            {type: 'bounceOut', desc: ''},
+            {type: 'bounceOutDown', desc: ''},
+            {type: 'bounceOutLeft', desc: ''},
+            {type: 'bounceOutRight', desc: ''},
+            {type: 'bounceOutUp', desc: ''},
+            {type: 'fadeIn', desc: ''},
+            {type: 'fadeInDown', desc: ''},
+            {type: 'fadeInDownBig', desc: ''},
+            {type: 'fadeInLeft', desc: ''},
+            {type: 'fadeInLeftBig', desc: ''},
+            {type: 'fadeInRight', desc: ''},
+            {type: 'fadeInRightBig', desc: ''},
+            {type: 'fadeInUp', desc: ''},
+            {type: 'fadeInUpBig', desc: ''},
+            {type: 'fadeOut', desc: ''},
+            {type: 'fadeOutDown', desc: ''},
+            {type: 'fadeOutDownBig', desc: ''},
+            {type: 'fadeOutLeft', desc: ''},
+            {type: 'fadeOutLeftBig', desc: ''},
+            {type: 'fadeOutRight', desc: ''},
+            {type: 'fadeOutRightBig', desc: ''},
+            {type: 'fadeOutUp', desc: ''},
+            {type: 'fadeOutUpBig', desc: ''},
+            {type: 'flipInX', desc: ''},
+            {type: 'flipInY', desc: ''},
+            {type: 'flipOutX', desc: ''},
+            {type: 'flipOutY', desc: ''},
+            {type: 'lightSpeedIn', desc: ''},
+            {type: 'lightSpeedOut', desc: ''},
+            {type: 'rotateIn', desc: ''},
+            {type: 'rotateInDownLeft', desc: ''},
+            {type: 'rotateInDownRight', desc: ''},
+            {type: 'rotateInUpLeft', desc: ''},
+            {type: 'rotateInUpRight', desc: ''},
+            {type: 'rotateOut', desc: ''},
+            {type: 'rotateOutDownLeft', desc: ''},
+            {type: 'rotateOutDownRight', desc: ''},
+            {type: 'rotateOutUpLeft', desc: ''},
+            {type: 'rotateOutUpRight', desc: ''},
+            {type: 'slideInDown', desc: ''},
+            {type: 'slideInLeft', desc: ''},
+            {type: 'slideInRight', desc: ''},
+            {type: 'slideOutLeft', desc: ''},
+            {type: 'slideOutRight', desc: ''},
+            {type: 'slideOutUp', desc: ''},
+            {type: 'slideInUp', desc: ''},
+            {type: 'slideOutDown', desc: ''},
+            {type: 'hinge', desc: ''},
+            {type: 'rollIn', desc: ''},
+            {type: 'rollOut', desc: ''},
+            {type: 'zoomIn', desc: ''},
+            {type: 'zoomInDown', desc: ''},
+            {type: 'zoomInLeft', desc: ''},
+            {type: 'zoomInRight', desc: ''},
+            {type: 'zoomInUp', desc: ''},
+            {type: 'zoomOut', desc: ''},
+            {type: 'zoomOutDown', desc: ''},
+            {type: 'zoomOutLeft', desc: ''},
+            {type: 'zoomOutRight', desc: ''},
+            {type: 'zoomOutUp', desc: ''},
             {type: '', desc: 'clear'},
         ]
     }
