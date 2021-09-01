@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animate.css</title>
+    <link rel="stylesheet" href="./animate.css">
+    <script src="../../vue/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <span @click="animate" style="cursor: pointer;">Click</span>
+        <div :class="bindClass" id="dowebok">animate</div>
+    </div>
+</body>
+<script>
+    new Vue({
+        el: '#app',
+        data:{
+            bindClass: ''
+        },
+        methods:{
+            animate(){
+                this.bindClass = this.bindClass ? '' : 'animated fadeInLeftBig'
+                console.log('animate')
+            }
+        }
+    })
+</script>
+<style>
+    /* #dowebok {
+        animate-duration: 2s, 
+        animate-delay: 1s,    
+        animate-iteration-count: 2 ,  
+    } */
+</style>
+</html>
