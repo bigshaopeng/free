@@ -10,23 +10,51 @@
 </head>
 <body>
     <div id="app">
-        <span @click="animate" style="cursor: pointer;">Click</span>
+        <span v-for="(item, index) in btnList" :key="index" @click="animate(item.type)" style="cursor: pointer;display: inline-block;margin: 10px;background: plum;">{{item.desc}}</span>
         <div :class="bindClass" id="dowebok">animate</div>
     </div>
 </body>
 <script>
+    // animate.css 是一个来自国外的 CSS3 动画库，它预设了
+    // 抖动（shake）、
+    // 闪烁（flash）、
+    // 弹跳（bounce）、
+    // 翻转（flip）、
+    // 旋转（rotateIn/rotateOut）、
+    // 淡入淡出（fadeIn/fadeOut）
+    // 等多达 60 多种动画效果，几乎包含了所有常见的动画效果。
+
+    // 虽然借助 animate.css 能够很方便、快速的制作 CSS3 动画效果，但还是建议看看 animate.css 的代码，也许你能从中学到一些东西。
+
+    // 兼容
+    // 浏览器兼容：当然是只兼容支持 CSS3 animate 属性的浏览器，他们分别是：IE10+、Firefox、Chrome、Opera、Safari。
     new Vue({
         el: '#app',
         data:{
+            btnList: btnList(),
             bindClass: ''
         },
         methods:{
-            animate(){
-                this.bindClass = this.bindClass ? '' : 'animated fadeInLeftBig'
-                console.log('animate')
+            animate(type){
+                console.log('type:---',type)
+                this.bindClass = 'animated ' + type
             }
         }
     })
+
+    function btnList(){
+        return [
+            {type: 'shake', desc: '抖动（shake）'},
+            {type: 'flash', desc: '闪烁（flash）'},
+            {type: 'bounce', desc: '弹跳（bounce）'},
+            {type: 'flip', desc: '翻转（flip）'},
+            {type: 'rotateIn', desc: '旋转（rotateIn）'},
+            {type: 'rotateOut', desc: '旋转（rotateOut）'},
+            {type: 'fadeIn', desc: '淡入淡出（fadeIn）'},
+            {type: 'fadeOut', desc: '淡入淡出（fadeOut）'},
+            {type: '', desc: ''},
+        ]
+    }
 </script>
 <style>
     /* #dowebok {
