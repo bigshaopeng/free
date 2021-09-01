@@ -18,7 +18,7 @@
 <body>
     <div id="app">
         <span 
-            v-for="(item, index) in btnList" :key="index" @click="animate(item.type)" 
+            v-for="(item, index) in btnList" :key="index" @click="animate(item.type)"
             style="cursor: pointer;display: inline-block;margin: 10px;background: plum;">
             {{index}}--{{item.desc || item.type}}</span>
         <div :class="bindClass" id="dowebok"></div>
@@ -48,10 +48,16 @@
             animate(type){
                 console.log('type:---',type)
                 this.bindClass = 'animated ' + type
+                // copyUrl2()
             }
         }
     })
 
+    function copyUrl2(){
+        var Url2=document.getElementById("dowebok");
+        Url2.select(); // 选择对象
+        document.execCommand("Copy"); // 执行浏览器复制命令
+    }
     function btnList(){
         return [
             {type: '', desc: 'clear'},
