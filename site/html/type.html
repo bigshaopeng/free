@@ -28,5 +28,7 @@
         return toTypeString(value).slice(8, -1);
     };
     const isPlainObject = (val) => toTypeString(val) === '[object Object]';
+    
+    export { isArray, isMap, isSet, isDate, isFunction, isString, isSymbol, isObject, isPromise, isPlainObject}
 </script>
 </html>
