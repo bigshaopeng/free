@@ -11,7 +11,7 @@ module.exports = (env) => {
 		mode: 'development',
 		devServer: {
 			contentBase: path.join(__dirname, 'dist'),
-			port: "6089",
+			port: "8080",
 			hot: true,
 			historyApiFallback: true
 		},

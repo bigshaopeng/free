@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Redirect, Switch, PrivateRoute, Link } from "react-router-dom";
 import HomeView from './page/home';
+import NavView from './page/nav';
 import LoginView from './page/login';
 require('!style-loader!css-loader!antd/dist/antd.css');
 
@@ -14,7 +15,7 @@ class TopPage extends React.Component {
 					{/* <Link to="/login">Login</Link>
 					<Link to="/home">Home</Link> */}
 					<Switch>
-						<Route path='/' exact component={HomeView} />
+						<Route path='/' exact component={NavView} />
 						<Route path="/login" component={LoginView} />
 						<Redirect to='/'></Redirect>
 					</Switch>
